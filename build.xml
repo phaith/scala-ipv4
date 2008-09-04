@@ -1,0 +1,119 @@
+<project name="scala-ipv4" default="dist" basedir=".">
+
+    <!-- set global properties for this build -->
+    <property name="src" value="src/main/scala"/>
+    <property name="tests" value="src/test/scala"/>
+    <property name="build" value="target"/>
+    <property name="build.classes" value="${build}/classes"/>
+    <property name="build.tests" value="${build}/tests"/>
+    <property name="dist" value="${build}/dist"/>
+    <property name="doc" value="${build}/doc"/>
+    <property name="jdoc" value="${build}/jdoc"/>
+    <property name="project.name" value="scala-ipv4"/>
+    <property name="release" value="0.1"/>
+    <property name="lib" value="lib"/>
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build.classes}"/>
+        <mkdir dir="${build.tests}"/>
+        <mkdir dir="${dist}"/>
+        <mkdir dir="${doc}"/>
+        <mkdir dir="${jdoc}"/>
+
+        <path id="lib.path">
+            <fileset dir="${lib}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </path>
+
+        <path id="build.class.path">
+            <pathelement location="${build.classes}"/>
+            <path refid="lib.path"/>
+        </path>
+
+        <!-- this is the class path used to run ${project.name} to test itself, in the "test" target -->
+        <path id="test.class.path">
+            <pathelement location="${dist}/lib/scalatest.jar"/>
+            <path refid="lib.path"/>
+        </path>
+
+        <path id="build.test.class.path">
+            <pathelement location="${build.classes}"/>
+            <pathelement location="${build.tests}"/>
+            <path refid="lib.path"/>
+        </path>
+
+        <taskdef name="scalatest" classname="org.scalatest.tools.ScalaTestTask">
+            <classpath>
+                <pathelement location="${lib}/scala-library.jar"/>
+                <pathelement location="${lib}/scalatest-0.9.3.jar"/>
+            </classpath>
+        </taskdef>
+
+        <taskdef resource="scala/tools/ant/antlib.xml">
+            <classpath>
+                <pathelement location="${lib}/scala-compiler.jar"/>
+                <pathelement location="${lib}/scala-library.jar"/>
+            </classpath>
+        </taskdef>
+
+        <path id="scaladoc.source.path">
+            <pathelement location="${src}"/>
+        </path>
+
+    </target>
+
+    <target name="clean" depends="init">
+        <delete dir="${build}"/>
+        <delete dir="test-output" quiet="true"/>
+    </target>
+
+    <target name="compile" depends="init, compile-main, compile-tests"/>
+
+    <target name="compile-main">
+        <scalac srcdir="${src}" destdir="${build.classes}" target="jvm-1.5" classpathref="build.class.path"/>
+    </target>
+
+    <target name="compile-tests" depends="compile-main">
+        <scalac srcdir="${tests}" destdir="${build.tests}" target="jvm-1.5" classpathref="build.test.class.path">
+            <include name="**/*.scala"/>
+        </scalac>
+    </target>
+
+    <target name="doc" depends="compile">
+        <javadoc sourcepath="${src}" destdir="${jdoc}" packagenames="org.scalatest,org.scalatest.tools"
+                 classpath="${build.classes}" windowtitle="${project.name} ${release}" doctitle="${project.name} ${release}"
+                 bottom=""/>
+
+        <scaladoc srcref="scaladoc.source.path" destdir="${doc}" classpathref="build.class.path"
+                  windowtitle="${project.name} ${release}" doctitle="${project.name} ${release}"
+                  bottom="">
+            <include name="**/*.scala"/>
+        </scaladoc>
+    </target>
+
+    <target name="dist" depends="compile">
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist}/lib"/>
+        <delete file="${dist}/lib/${project.name}-${release}.jar"/>
+
+        <jar jarfile="${dist}/lib/${project.name}-${release}.jar" basedir="${build.classes}">
+            <!--<manifest>--><!--<attribute name="Main-Class" value="org.scalatest.tools.Runner"/>--><!--<attribute name="Class-Path" value="junit-4.1.jar"/>--><!--</manifest>-->
+        </jar>
+    </target>
+
+    <target name="test" depends="dist">
+        <scalatest>
+            <runpath>
+                <pathelement location="${build.classes}"/>
+                <pathelement location="${build.tests}"/>
+            </runpath>
+            <reporter type="stdout" />
+        </scalatest>
+    </target>
+
+</project>
+
