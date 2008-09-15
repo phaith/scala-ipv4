@@ -9,6 +9,8 @@ case class IpAddress(val value: Long) extends QuadDottedDecimal {
 
   def this(address: String) = this (QuadDottedDecimal.parse(address))
 
+  def this(value: Double) = this(value.toLong)
+
   /**
    * Addition. Will never overflow, but wraps around when the highest ip address has been reached.
    */

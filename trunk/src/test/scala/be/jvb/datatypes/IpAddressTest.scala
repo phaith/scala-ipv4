@@ -1,9 +1,12 @@
 package be.jvb.datatypes
 
-import org.scalatest.prop.Checkers
+import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.FunSuite
+import org.scalatest.prop.{Checkers, PropSuite}
+import org.scalacheck.Gen._
+import org.scalacheck.Prop._
 
-class IpAddressTest extends FunSuite {
+class IpAddressTest extends PropSuite {
 
   test("create from string 0.0.0.0"){
     val address = new IpAddress("0.0.0.0")
@@ -82,5 +85,39 @@ class IpAddressTest extends FunSuite {
     assert(new IpAddress("255.255.255.255") >= new IpAddress("255.255.255.255"))
     assert(new IpAddress("255.255.255.255") >= new IpAddress("0.0.0.0"))
   }
+
+  def ipAddressGenerator: Gen[IpAddress] = {
+    for {
+      value <- Gen.choose(0L, 0xFFFFFFFFL)
+    } yield new IpAddress(value)
+  }
+
+  implicit def arbitraryIpAddress: Arbitrary[IpAddress] = Arbitrary[IpAddress](ipAddressGenerator)
+
+  def ipAddressAsString: Gen[String] = {
+    for{
+      octets <- vectorOf(4, choose(0, 255))
+    } yield octets.mkString(".")
+  }
+
+  def minIpAddressAsString: Gen[String] = {
+    for {
+      string <- vectorOf(4, elements(0))
+    } yield string.mkString(".")
+  }
+
+  def maxIpAddressAsString: Gen[String] = {
+    for {
+      string <- vectorOf(4, elements(255))
+    } yield string.mkString(".")
+  }
+
+  def ipAddressAsStringWithCornerCases: Gen[String] = {
+    oneOf(ipAddressAsString, minIpAddressAsString, maxIpAddressAsString)
+  }
+
+  test("plus and minus inverse each other", (address: IpAddress) => address == address + 1 - 1)
+
+  test("toString yields the same string it was constructed with", forAll(ipAddressAsStringWithCornerCases)(address => address == new IpAddress(address).toString))
 
 }
