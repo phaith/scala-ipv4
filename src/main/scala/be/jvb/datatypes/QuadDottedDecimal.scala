@@ -34,7 +34,7 @@ trait QuadDottedDecimal extends Ordered[QuadDottedDecimal] {
 
 object QuadDottedDecimal {
   def parse(address: String): Long = {
-    if (address == null)
+    if (address eq null)
       throw new IllegalArgumentException("invalid address [null]")
 
     // TODO: generates NPE -> wrap parseLong in a function that first checks and throws illegalargumentexception

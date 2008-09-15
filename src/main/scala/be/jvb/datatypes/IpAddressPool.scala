@@ -51,7 +51,7 @@ case class IpAddressPool(override val first: IpAddress, override val last: IpAdd
     val freeRangeBeforeAddress:Iterable[IpAddressRange] = freeRanges.filter(element => element.last + 1 == address)
     val freeRangeAfterAddress:Iterable[IpAddressRange] = freeRanges.filter(element => element.first - 1 == address)
 
-    println("address: " + address + ", pool: " + this + ",before: " + freeRangeBeforeAddress + ",after: " + freeRangeAfterAddress)
+//    println("address: " + address + ", pool: " + this + ",before: " + freeRangeBeforeAddress + ",after: " + freeRangeAfterAddress)
 
     if (freeRangeBeforeAddress.isEmpty && freeRangeAfterAddress.isEmpty) {
       // no match -> nothing to "defragment"

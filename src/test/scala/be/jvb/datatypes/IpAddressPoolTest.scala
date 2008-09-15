@@ -1,8 +1,9 @@
 package be.jvb.datatypes
 
-import org.scalatest.FunSuite
+import org.scalacheck.{Arbitrary, Gen}
+import org.scalatest.prop.PropSuite
 
-class IpAddressPoolTest extends FunSuite {
+class IpAddressPoolTest extends PropSuite {
 
   test("allocate next"){
     val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.6"))
@@ -69,7 +70,43 @@ class IpAddressPoolTest extends FunSuite {
     assert(pool.isFree(new IpAddress("1.2.3.9")))
   }
 
-  // TODO: add tests using properties (scalacheck)
+  // todo: make sure that corner cases are included in every run...
+  def ipAddressGenerator(miminalAddress: Option[IpAddress]): Gen[IpAddress] = {
+    miminalAddress match {
+      case None => for{value <- Gen.choose(0L, 0xFFFFFFFFL)} yield new IpAddress(value)
+      case Some(address) => for{value <- Gen.choose(address.value, 0xFFFFFFFFL)} yield new IpAddress(value)
+    }
+  }
+
+  def ipAddressGenerator(pool: IpAddressPool): Gen[IpAddress] = {
+    for {
+      value <- Gen.choose(pool.first.value, pool.last.value)
+    } yield new IpAddress(value)
+  }
+
+  def ipAddressPoolGenerator: Gen[IpAddressPool] = {
+    for{
+      first <- ipAddressGenerator(None)
+      last <- ipAddressGenerator(Some(first))
+    } yield new IpAddressPool(first, last)
+  }
+
+  def ipAddressAndContainingPoolGenerator: Gen[(IpAddress, IpAddressPool)] = {
+    for {
+      pool <- ipAddressPoolGenerator
+      address <- ipAddressGenerator(pool)
+    } yield (address, pool)
+  }
+
+  implicit def arbitraryIpAddress: Arbitrary[IpAddress] = Arbitrary[IpAddress](ipAddressGenerator(None))
+
+  implicit def arbitraryIpAddressPool: Arbitrary[IpAddressPool] = Arbitrary[IpAddressPool](ipAddressPoolGenerator)
+
+  // TODO: address should be in the pool...
+//  specify("allocating an adress means it is not free afterwards",
+//    forAll(ipAddressAndContainingPoolGenerator)
+//              ((address,pool) => {pool.allocate(address) == Some(address) ==> !pool.isFree(address)}))
+
 
 
 }
