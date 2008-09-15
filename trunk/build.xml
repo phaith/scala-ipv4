@@ -101,15 +101,16 @@
         <delete file="${dist}/lib/${project.name}-${release}.jar"/>
 
         <jar jarfile="${dist}/lib/${project.name}-${release}.jar" basedir="${build.classes}">
-            <!--<manifest>--><!--<attribute name="Main-Class" value="org.scalatest.tools.Runner"/>--><!--<attribute name="Class-Path" value="junit-4.1.jar"/>--><!--</manifest>-->
         </jar>
     </target>
 
+    <!-- TODO: this doesn't seem to work...-->
     <target name="test" depends="dist">
         <scalatest>
             <runpath>
                 <pathelement location="${build.classes}"/>
                 <pathelement location="${build.tests}"/>
+                <pathelement location="${lib}/*.jar"/>
             </runpath>
             <reporter type="stdout" />
         </scalatest>
