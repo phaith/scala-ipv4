@@ -29,11 +29,11 @@ class IpAddressRangeTest extends FunSuite {
   }
 
   test("addresses list"){
-    assert(List(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.5")) === new IpAddressRange(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.5")).addresses())
+    assert(List(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.5")) === new IpAddressRange(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.5")).addresses().toList)
   }
 
-  ignore("very large address list"){
-    val range = new IpAddressRange(new IpAddress("0.0.0.0"), new IpAddress("255.255.255.255"))
+  test("very large address list"){
+    val range = new IpAddressRange(new IpAddress("0.0.0.0"), new IpAddress("0.255.255.255"))
     range.addresses().foreach(element => assert(range.contains(element)))
   }
 
