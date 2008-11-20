@@ -25,5 +25,17 @@ case class IpAddress(val value: Long) extends QuadDottedDecimal {
 
 object IpAddress {
   def ipAddress(address: String) = new IpAddress(address)
+
+  def from(first: IpAddress, last: IpAddress): Stream[IpAddress] = {
+    if (first < last)
+      {
+        Stream.cons(first, from(first + 1, last))
+      } else {
+        Stream.cons(first, Stream.empty)
+    }
+    // TODO: corner cases (first > last etc)
+  }
+
+
 }
 
