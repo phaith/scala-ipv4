@@ -1,7 +1,10 @@
 package be.jvb.datatypes
 
 import org.scalatest.FunSuite
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
 class IpNetworkTest extends FunSuite {
 
   test("to string") {

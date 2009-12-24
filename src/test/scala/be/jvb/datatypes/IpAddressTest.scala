@@ -1,53 +1,53 @@
 package be.jvb.datatypes
 
-import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.FunSuite
-import org.scalatest.prop.{Checkers, PropSuite}
-import org.scalacheck.Gen._
-import org.scalacheck.Prop._
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.prop.Checkers
+import org.scalacheck.{Arbitrary, Gen, Prop}
 
-class IpAddressTest extends PropSuite {
-
-  test("create from string 0.0.0.0"){
+@RunWith(classOf[JUnitRunner])
+class IpAddressTest extends FunSuite with Checkers {
+  test("create from string 0.0.0.0") {
     val address = new IpAddress("0.0.0.0")
     assert(0 === address.value)
   }
 
-  test("create from null string"){
-    intercept(classOf[IllegalArgumentException]) {
+  test("create from null string") {
+    intercept[IllegalArgumentException] {
       new IpAddress(null)
     }
   }
 
-  test("create from invalid string"){
-    intercept(classOf[IllegalArgumentException]) {
+  test("create from invalid string") {
+    intercept[IllegalArgumentException] {
       new IpAddress("something.invalid")
     }
   }
 
-  test("create from string 255.255.255.255"){
+  test("create from string 255.255.255.255") {
     val address = new IpAddress("255.255.255.255")
     assert(Math.pow(2, 32).toLong - 1 === address.value)
   }
 
-  test("create from long too large"){
-    intercept(classOf[IllegalArgumentException]) {
+  test("create from long too large") {
+    intercept[IllegalArgumentException] {
       IpAddress(Math.pow(2, 32).toLong)
     }
   }
 
-  test("create from long too small"){
-    intercept(classOf[IllegalArgumentException]) {
+  test("create from long too small") {
+    intercept[IllegalArgumentException] {
       IpAddress(-1)
     }
   }
 
-  test("to and from string conversion 192.168.254.115"){
+  test("to and from string conversion 192.168.254.115") {
     val address = new IpAddress("192.168.254.115")
     assert("192.168.254.115" === address.toString())
   }
 
-  test("to and from string conversion 255.255.255.255"){
+  test("to and from string conversion 255.255.255.255") {
     val address = new IpAddress("255.255.255.255")
     assert("255.255.255.255" === address.toString())
   }
@@ -87,7 +87,7 @@ class IpAddressTest extends PropSuite {
   }
 
   def ipAddressGenerator: Gen[IpAddress] = {
-    for {
+    for{
       value <- Gen.choose(0L, 0xFFFFFFFFL)
     } yield new IpAddress(value)
   }
@@ -96,28 +96,32 @@ class IpAddressTest extends PropSuite {
 
   def ipAddressAsString: Gen[String] = {
     for{
-      octets <- vectorOf(4, choose(0, 255))
+      octets <- Gen.vectorOf(4, Gen.choose(0, 255))
     } yield octets.mkString(".")
   }
 
   def minIpAddressAsString: Gen[String] = {
-    for {
-      string <- vectorOf(4, elements(0))
+    for{
+      string <- Gen.vectorOf(4, Gen.elements(0))
     } yield string.mkString(".")
   }
 
   def maxIpAddressAsString: Gen[String] = {
-    for {
-      string <- vectorOf(4, elements(255))
+    for{
+      string <- Gen.vectorOf(4, Gen.elements(255))
     } yield string.mkString(".")
   }
 
   def ipAddressAsStringWithCornerCases: Gen[String] = {
-    oneOf(ipAddressAsString, minIpAddressAsString, maxIpAddressAsString)
+    Gen.oneOf(ipAddressAsString, minIpAddressAsString, maxIpAddressAsString)
   }
 
-  test("plus and minus inverse each other", (address: IpAddress) => address == address + 1 - 1)
+  test("plus and minus inverse each other") {
+    check((address: IpAddress) => address == address + 1 - 1)
+  }
 
-  test("toString yields the same string it was constructed with", forAll(ipAddressAsStringWithCornerCases)(address => address == new IpAddress(address).toString))
+  test("toString yields the same string it was constructed with") {
+    check(Prop.forAll(ipAddressAsStringWithCornerCases)(address => address == new IpAddress(address).toString))
+  }
 
 }

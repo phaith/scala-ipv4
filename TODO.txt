@@ -1,0 +1,7 @@
+- move to github
+- add mac addresses
+- add methods to convert to inetaddress
+- rename quaddotteddecimal (maybe IpAddress?) and make it private to this library if that is possible
+- add mac address pool, and abstract the pool concept from ip address pool
+- rename the project
+- blog it

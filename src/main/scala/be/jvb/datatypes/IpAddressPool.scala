@@ -31,6 +31,7 @@ case class IpAddressPool(override val first: IpAddress, override val last: IpAdd
   def allocate(address: IpAddress): Option[IpAddress] = {
     var allocated: Option[IpAddress] = None
     // take the range that has the address, and allocate in that range
+    // TODO: do this by using the sorted nature of the set
     freeRanges.filter(_.contains(address)).foreach(x => {
       doAllocate(address, x);
       allocated = Some(address)
@@ -46,7 +47,7 @@ case class IpAddressPool(override val first: IpAddress, override val last: IpAdd
   }
 
   def deAllocate(address: IpAddress) = {
-    // append or prepend existing range if possible, to avoid framentation
+    // append or prepend existing range if possible, to avoid fragmentation
 
     val freeRangeBeforeAddress:Iterable[IpAddressRange] = freeRanges.filter(element => element.last + 1 == address)
     val freeRangeAfterAddress:Iterable[IpAddressRange] = freeRanges.filter(element => element.first - 1 == address)
