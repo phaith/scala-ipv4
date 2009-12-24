@@ -1,35 +1,36 @@
 package be.jvb.datatypes
 
-import org.scalacheck.{Arbitrary, Gen}
-import org.scalatest.prop.PropSuite
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.FunSuite
 
-class IpAddressPoolTest extends PropSuite {
-
-  test("allocate next"){
+@RunWith(classOf[JUnitRunner])
+class IpAddressPoolTest extends FunSuite {
+  test("allocate next") {
     val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.6"))
     assert(Some(new IpAddress("1.2.3.4")) === pool.allocate)
     assert(Some(new IpAddress("1.2.3.5")) === pool.allocate)
     assert(Some(new IpAddress("1.2.3.6")) === pool.allocate)
   }
 
-  test("allocate to exhaustion"){
+  test("allocate to exhaustion") {
     val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.4"))
     assert(Some(new IpAddress("1.2.3.4")) === pool.allocate)
     assert(None === pool.allocate)
   }
 
-  test("allocate specific address"){
+  test("allocate specific address") {
     val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.6"))
     assert(Some(new IpAddress("1.2.3.5")) === pool.allocate(new IpAddress("1.2.3.5")))
   }
 
-  test("allocate unfree address"){
+  test("allocate unfree address") {
     val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.6"))
     assert(Some(new IpAddress("1.2.3.5")) === pool.allocate(new IpAddress("1.2.3.5")))
     assert(None === pool.allocate(new IpAddress("1.2.3.5")))
   }
 
-  test("allocate and free"){
+  test("allocate and free") {
     val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.10"))
     assert(pool.isFree(new IpAddress("1.2.3.6")))
     pool.allocate(new IpAddress("1.2.3.6"))
@@ -40,7 +41,7 @@ class IpAddressPoolTest extends PropSuite {
     assert(!pool.isFree(new IpAddress("1.2.3.9")))
   }
 
-  test("deallocate and free"){
+  test("deallocate and free") {
     val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.10"))
     pool.allocate(new IpAddress("1.2.3.6"))
     pool.allocate(new IpAddress("1.2.3.8"))
@@ -70,43 +71,20 @@ class IpAddressPoolTest extends PropSuite {
     assert(pool.isFree(new IpAddress("1.2.3.9")))
   }
 
-  // todo: make sure that corner cases are included in every run...
-  def ipAddressGenerator(miminalAddress: Option[IpAddress]): Gen[IpAddress] = {
-    miminalAddress match {
-      case None => for{value <- Gen.choose(0L, 0xFFFFFFFFL)} yield new IpAddress(value)
-      case Some(address) => for{value <- Gen.choose(address.value, 0xFFFFFFFFL)} yield new IpAddress(value)
+  
+  ignore("performance") {
+    // create very large pool
+    val pool = new IpAddressPool(new IpAddress("1.0.0.0"), new IpAddress("1.2.255.255"))
+
+    // allocate one address every two addresses (lots of fragmentation)
+    val start = System.nanoTime();
+    var toAllocate = pool.first
+    while (pool.contains(toAllocate)) {
+      pool.allocate(toAllocate)
+      toAllocate += 2
     }
+
+    // should be finished in 5 seconds
+    assert((System.nanoTime() - start) <= 5000000000L);
   }
-
-  def ipAddressGenerator(pool: IpAddressPool): Gen[IpAddress] = {
-    for {
-      value <- Gen.choose(pool.first.value, pool.last.value)
-    } yield new IpAddress(value)
-  }
-
-  def ipAddressPoolGenerator: Gen[IpAddressPool] = {
-    for{
-      first <- ipAddressGenerator(None)
-      last <- ipAddressGenerator(Some(first))
-    } yield new IpAddressPool(first, last)
-  }
-
-  def ipAddressAndContainingPoolGenerator: Gen[(IpAddress, IpAddressPool)] = {
-    for {
-      pool <- ipAddressPoolGenerator
-      address <- ipAddressGenerator(pool)
-    } yield (address, pool)
-  }
-
-  implicit def arbitraryIpAddress: Arbitrary[IpAddress] = Arbitrary[IpAddress](ipAddressGenerator(None))
-
-  implicit def arbitraryIpAddressPool: Arbitrary[IpAddressPool] = Arbitrary[IpAddressPool](ipAddressPoolGenerator)
-
-  // TODO: address should be in the pool...
-//  specify("allocating an adress means it is not free afterwards",
-//    forAll(ipAddressAndContainingPoolGenerator)
-//              ((address,pool) => {pool.allocate(address) == Some(address) ==> !pool.isFree(address)}))
-
-
-
 }
