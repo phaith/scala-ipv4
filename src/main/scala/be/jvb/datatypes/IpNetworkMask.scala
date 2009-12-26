@@ -5,9 +5,9 @@ package be.jvb.datatypes
  *
  * @author JanVanBesien
  */
-case class IpNetworkMask(val value: Long) extends QuadDottedDecimal {
+case class IpNetworkMask(override val value: Long) extends IpAddress(value) {
 
-  def this(mask: String) = this (QuadDottedDecimal.parse(mask))
+  def this(address: String) = this (SmallByteArray.parse(address))
 
   // TODO: can this not be more elegantly written
   def prefix() = {

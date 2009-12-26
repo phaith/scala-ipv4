@@ -1,7 +1,13 @@
 - move to github
 - add mac addresses
 - add methods to convert to inetaddress
-- rename quaddotteddecimal (maybe IpAddress?) and make it private to this library if that is possible
+- make smallbytearray private to this library if that is possible
 - add mac address pool, and abstract the pool concept from ip address pool
+- verify pool performance
+- implement iterable or whatever to be able to loop through ip address ranges etc
+- check TODO's in code (constructor versus factory methods, ...)
+- apply/unapply
+- examples as BDD test?
+- change package name
 - rename the project
 - blog it
