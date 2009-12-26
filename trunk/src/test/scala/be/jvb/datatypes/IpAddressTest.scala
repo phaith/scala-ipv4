@@ -5,6 +5,7 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.Checkers
 import org.scalacheck.{Arbitrary, Gen, Prop}
+import java.net.InetAddress
 
 @RunWith(classOf[JUnitRunner])
 class IpAddressTest extends FunSuite with Checkers {
@@ -15,7 +16,13 @@ class IpAddressTest extends FunSuite with Checkers {
 
   test("create from null string") {
     intercept[IllegalArgumentException] {
-      new IpAddress(null)
+      new IpAddress(null:String)
+    }
+  }
+
+  test("create from null InetAddress") {
+    intercept[IllegalArgumentException] {
+      new IpAddress(null:InetAddress)
     }
   }
 
@@ -84,6 +91,11 @@ class IpAddressTest extends FunSuite with Checkers {
     assert(new IpAddress("1.2.3.4") >= new IpAddress("1.2.3.4"))
     assert(new IpAddress("255.255.255.255") >= new IpAddress("255.255.255.255"))
     assert(new IpAddress("255.255.255.255") >= new IpAddress("0.0.0.0"))
+  }
+
+  test("construct from InetAddress") {
+    expect(new IpAddress(InetAddress.getByName("1.2.230.240"))) {new IpAddress("1.2.230.240")}
+    expect(new IpAddress(InetAddress.getLocalHost)) {new IpAddress("127.0.0.1")}
   }
 
   def ipAddressGenerator: Gen[IpAddress] = {

@@ -35,7 +35,7 @@ class IpAddressRangeTest extends FunSuite {
     assert(List(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.5")) === new IpAddressRange(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.5")).addresses().toList)
   }
 
-  test("very large address list"){
+  test("very large address list shouldn't go out of memory"){
     val range = new IpAddressRange(new IpAddress("0.0.0.0"), new IpAddress("0.255.255.255"))
     range.addresses().foreach(element => assert(range.contains(element)))
   }
