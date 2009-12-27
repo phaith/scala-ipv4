@@ -37,16 +37,6 @@ object IpAddress {
 
   val RADIX = 10;
 
-  def from(first: IpAddress, last: IpAddress): Stream[IpAddress] = {
-    if (first < last)
-      {
-        Stream.cons(first, from(first + 1, last))
-      } else {
-      Stream.cons(first, Stream.empty)
-    }
-    // TODO: corner cases (first > last etc)
-  }
-
 //  def apply(string: String): IpAddress = new IpAddress(SmallByteArray.parseAsLong(string, N_BYTES, radix))
 
 //  def unapply(ipAddress: IpAddress): Some[String] = ipAddress.toString

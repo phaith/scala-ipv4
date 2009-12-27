@@ -19,7 +19,11 @@ case class IpAddressRange(first: IpAddress, last: IpAddress) extends Ordered[IpA
   }
 
   def addresses(): Stream[IpAddress] = {
-    IpAddress.from(first, last)
+    if (first < last) {
+      Stream.cons(first, new IpAddressRange(first + 1, last).addresses)
+    } else {
+      Stream.cons(first, Stream.empty)
+    }
   }
 
   def compare(that: IpAddressRange): Int = {
