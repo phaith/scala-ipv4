@@ -5,7 +5,7 @@ import java.net.InetAddress;
 /**
  * Represents an IPv4 address.
  *
- * @author Jan Van Besien
+ * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
 case class IpAddress(val value: Long) extends SmallByteArray {
   def this(address: String) = this (SmallByteArray.parseAsLong(address, IpAddress.N_BYTES, IpAddress.RADIX))

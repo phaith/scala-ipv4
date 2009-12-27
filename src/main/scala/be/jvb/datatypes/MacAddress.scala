@@ -3,7 +3,7 @@ package be.jvb.datatypes
 /**
  * Represents a MAC address.
  *
- * @author <a href="mailto:jvb@newtec.eu">Jan Van Besien</a>
+ * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
 case class MacAddress(val value: Long) extends SmallByteArray {
 

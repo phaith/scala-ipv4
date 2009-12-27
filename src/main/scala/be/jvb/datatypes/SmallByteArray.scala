@@ -2,6 +2,8 @@ package be.jvb.datatypes
 
 /**
  * Represents a byte array which is small enough to fit in a long (max 8 bytes).
+ *
+ * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
 private[datatypes] trait SmallByteArray extends Ordered[SmallByteArray] {
   val value: Long

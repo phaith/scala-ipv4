@@ -4,6 +4,9 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
 
+/**
+ * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
+ */
 @RunWith(classOf[JUnitRunner])
 class IpAddressPoolTest extends FunSuite {
   test("allocate next") {

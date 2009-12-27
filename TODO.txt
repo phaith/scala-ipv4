@@ -1,6 +1,5 @@
 - move to github (or maybe not)
-- make smallbytearray private to this library if that is possible
-- add mac address pool, and abstract the pool concept from ip address pool
+- add mac address pool, and abstract the pool concept from ip address pool, and make sure they are thread safe!
 - verify pool performance
 - implement iterable or whatever to be able to loop through ip address ranges etc
 - check TODO's in code (constructor versus factory methods -> all constructors? or different apply/unapply combinations?, ...)
