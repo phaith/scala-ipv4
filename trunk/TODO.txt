@@ -1,13 +1,13 @@
 - move to github
-- add mac addresses
-- add methods to convert to inetaddress
 - make smallbytearray private to this library if that is possible
 - add mac address pool, and abstract the pool concept from ip address pool
 - verify pool performance
 - implement iterable or whatever to be able to loop through ip address ranges etc
-- check TODO's in code (constructor versus factory methods, ...)
+- check TODO's in code (constructor versus factory methods -> all constructors? or different apply/unapply combinations?, ...)
 - apply/unapply
 - examples as BDD test?
 - change package name
 - rename the project
+- javadoc (@author tags etc)
+- do I need to use case classes?
 - blog it

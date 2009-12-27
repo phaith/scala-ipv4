@@ -32,6 +32,12 @@ class IpAddressTest extends FunSuite with Checkers {
     }
   }
 
+  test("create from invalid length string") {
+    intercept[IllegalArgumentException] {
+      new IpAddress("0.1.2.3.5.6")
+    }
+  }
+
   test("create from string 255.255.255.255") {
     val address = new IpAddress("255.255.255.255")
     assert(Math.pow(2, 32).toLong - 1 === address.value)

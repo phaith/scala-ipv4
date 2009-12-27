@@ -8,34 +8,34 @@ import java.net.InetAddress;
  * @author Jan Van Besien
  */
 case class IpAddress(val value: Long) extends SmallByteArray {
-  def this(address: String) = this (SmallByteArray.parse(address))
+  def this(address: String) = this (SmallByteArray.parseAsLong(address, IpAddress.N_BYTES, IpAddress.RADIX))
 
   def this(inetAddress: InetAddress) = {
     this (if (inetAddress == null) throw new IllegalArgumentException("can not create from [null]") else inetAddress.getHostAddress())
   }
 
-  def nBytes = 4
+  def nBytes = IpAddress.N_BYTES
 
-  override def toString: String = {
-    val ints = toIntArray(nBytes)
-    ints(0) + "." + ints(1) + "." + ints(2) + "." + ints(3)
-  }
+  def radix = IpAddress.RADIX
 
   /**
    * Addition. Will never overflow, but wraps around when the highest ip address has been reached.
    */
-  def +(value: Long) = new IpAddress((this.value + value) & 0x00000000FFFFFFFFL)
+  def +(value: Long) = new IpAddress((this.value + value) & maxValue)
 
   /**
    * Substraction. Will never underflow, but wraps around when the lowest ip address has been reached.
    */
-  def -(value: Long) = new IpAddress((this.value - value) & 0x00000000FFFFFFFFL)
+  def -(value: Long) = new IpAddress((this.value - value) & maxValue)
 
   def toInetAddress: InetAddress = InetAddress.getByName(toString)
+
 }
 
 object IpAddress {
-  def ipAddress(address: String) = new IpAddress(address)
+  val N_BYTES = 4
+
+  val RADIX = 10;
 
   def from(first: IpAddress, last: IpAddress): Stream[IpAddress] = {
     if (first < last)
@@ -47,6 +47,9 @@ object IpAddress {
     // TODO: corner cases (first > last etc)
   }
 
+//  def apply(string: String): IpAddress = new IpAddress(SmallByteArray.parseAsLong(string, N_BYTES, radix))
+
+//  def unapply(ipAddress: IpAddress): Some[String] = ipAddress.toString
 
 }
 
