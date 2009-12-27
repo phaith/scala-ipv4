@@ -1,8 +1,5 @@
 package be.jvb.datatypes
 
-import java.util.regex.Pattern
-import java.util.Arrays
-
 /**
  * Represents a byte array which is small enough to fit in a long (max 8 bytes).
  */

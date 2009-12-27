@@ -1,4 +1,4 @@
-- move to github
+- move to github (or maybe not)
 - make smallbytearray private to this library if that is possible
 - add mac address pool, and abstract the pool concept from ip address pool
 - verify pool performance
