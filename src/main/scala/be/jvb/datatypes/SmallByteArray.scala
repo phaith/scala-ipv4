@@ -1,12 +1,19 @@
 package be.jvb.datatypes
 
+import java.util.regex.Pattern
+import java.util.Arrays
+
 /**
  * Represents a byte array which is small enough to fit in a long (max 8 bytes).
  */
 trait SmallByteArray extends Ordered[SmallByteArray] {
-  def value: Long
+  val value: Long
 
   def nBytes: Int
+
+  def radix: Int // TODO: only accept 10 or 16 -> enum?
+
+  def zeroPaddingUpTo: Int = 0
 
   val maxValue = Math.pow(2, nBytes * 8).toLong - 1
 
@@ -22,7 +29,7 @@ trait SmallByteArray extends Ordered[SmallByteArray] {
     val ints = new Array[Int](size)
 
     for (i <- 0 until size) {
-      ints(i) = (((value << i * 8) >>> 24) & 0xFF).asInstanceOf[Int]
+      ints(i) = (((value << i * 8) >>> 8 * (nBytes - 1)) & 0xFF).asInstanceOf[Int]
     }
 
     return ints
@@ -30,26 +37,49 @@ trait SmallByteArray extends Ordered[SmallByteArray] {
 
   override def compare(that: SmallByteArray): Int = this.value.compare(that.value)
 
+  override def toString: String = {
+    val ints = toIntArray(nBytes)
+    val strings = for (i <- 0 until nBytes) yield String.format(formatString,ints(i).asInstanceOf[Object])
+
+    return strings.mkString(".")
+  }
+
+  lazy val formatString = {
+    if (radix == 16 && zeroPaddingUpTo != 0)
+      "%0" + zeroPaddingUpTo + "X"
+    else if (zeroPaddingUpTo != 0)
+      "%0" + zeroPaddingUpTo + "d"
+    else
+      "%d"
+  }
+
 }
 
 object SmallByteArray {
-  def parse(string: String): Long = {
+
+  // TODO: private in this package!
+  def parseAsLong(string:String, length:Int, radix:Int):Long = {
     if (string eq null)
       throw new IllegalArgumentException("can not parse [null]")
 
+    val longArray = parseAsLongArray(string, radix)
+
+    if (longArray.length != length)
+      throw new IllegalArgumentException("can not parse [" + string + "] into a SmallByteArray of [" + length + "] bytes")
+
+    mergeBytesOfArrayIntoLong(longArray)
+  }
+
+  private def parseAsLongArray(string: String, radix:Int): Array[Long] = {
     // TODO: generates NPE -> wrap parseLong in a function that first checks and throws illegalargumentexception
-    val longArray: Array[Long] = string.split("\\.").map(java.lang.Long.parseLong(_))
+    string.split("\\.").map(java.lang.Long.parseLong(_, radix))
+  }
 
-    val length = longArray.length
-
-    if (length > 8)
-      throw new IllegalArgumentException("can not parse [" + string + "] into a SmallByteArray, can not be more than 8 bytes")
-
-    var result: Long = 0
-    for (i <- 0 until length) {
-      result |= (longArray(i) << ((length - i - 1) * 8))
+  private def mergeBytesOfArrayIntoLong(array: Array[Long]): Long = {
+    var result = 0L
+    for (i <- 0 until array.length) {
+      result |= (array(i) << ((array.length - i - 1) * 8))
     }
     return result
   }
-
 }

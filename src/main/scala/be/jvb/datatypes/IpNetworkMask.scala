@@ -7,7 +7,7 @@ package be.jvb.datatypes
  */
 case class IpNetworkMask(override val value: Long) extends IpAddress(value) {
 
-  def this(address: String) = this (SmallByteArray.parse(address))
+  def this(address: String) = this (SmallByteArray.parseAsLong(address, IpAddress.N_BYTES, IpAddress.RADIX))
 
   // TODO: can this not be more elegantly written
   def prefix() = {
