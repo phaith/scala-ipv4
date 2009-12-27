@@ -4,6 +4,9 @@ import org.scalatest.FunSuite
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
+/**
+ * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
+ */
 @RunWith(classOf[JUnitRunner])
 class IpNetworkTest extends FunSuite {
 

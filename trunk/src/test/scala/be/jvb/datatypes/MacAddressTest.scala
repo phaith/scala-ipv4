@@ -5,8 +5,9 @@ import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.Checkers
 
-
-import org.scalacheck.{Gen, Prop}
+/**
+ * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
+ */
 @RunWith(classOf[JUnitRunner])
 class MacAddressTest extends FunSuite with Checkers {
   test("create from string 0.0.0.0.0.0") {

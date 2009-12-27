@@ -7,7 +7,7 @@ import scala.collection.jcl.TreeSet
  * Represents a pool of IPv4 addresses. A pool is a range of addresses, from which some can be "in use" and some can be
  * "free".
  *
- * @author JanVanBesien
+ * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
 case class IpAddressPool(override val first: IpAddress, override val last: IpAddress) extends IpAddressRange(first, last) {
 

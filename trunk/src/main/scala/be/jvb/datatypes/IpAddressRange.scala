@@ -1,10 +1,10 @@
 package be.jvb.datatypes
 
 /**
- *  Represents a continuous range of IPv4 ip addresses (bounds included). Ip address ranges are ordered on the first
- *  address, or on the second address if the first is equal.
+ * Represents a continuous range of IPv4 ip addresses (bounds included). Ip address ranges are ordered on the first
+ * address, or on the second address if the first is equal.
  *
- * @author JanVan Besien
+ * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
 case class IpAddressRange(first: IpAddress, last: IpAddress) extends Ordered[IpAddressRange] {
   if (last < first)

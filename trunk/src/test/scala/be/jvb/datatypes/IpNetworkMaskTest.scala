@@ -7,6 +7,9 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.Checkers
 
+/**
+ * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
+ */
 @RunWith(classOf[JUnitRunner])
 class IpNetworkMaskTest extends FunSuite with Checkers {
   test("mask or prefix construction") {

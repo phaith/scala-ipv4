@@ -7,6 +7,9 @@ import org.scalatest.prop.Checkers
 import org.scalacheck.{Arbitrary, Gen, Prop}
 import java.net.InetAddress
 
+/**
+ * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
+ */
 @RunWith(classOf[JUnitRunner])
 class IpAddressTest extends FunSuite with Checkers {
   test("create from string 0.0.0.0") {
