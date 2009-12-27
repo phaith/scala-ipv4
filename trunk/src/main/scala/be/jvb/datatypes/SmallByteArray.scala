@@ -3,7 +3,7 @@ package be.jvb.datatypes
 /**
  * Represents a byte array which is small enough to fit in a long (max 8 bytes).
  */
-trait SmallByteArray extends Ordered[SmallByteArray] {
+private[datatypes] trait SmallByteArray extends Ordered[SmallByteArray] {
   val value: Long
 
   def nBytes: Int
@@ -22,20 +22,30 @@ trait SmallByteArray extends Ordered[SmallByteArray] {
     throw new IllegalArgumentException("out of range [0x" + java.lang.Long.toHexString(value) + "] with [" + nBytes + "] bytes")
   }
 
-  protected def toIntArray(size: Int): Array[Int] = {
-    val ints = new Array[Int](size)
+  def toIntArray(): Array[Int] = {
+    val ints = new Array[Int](nBytes)
 
-    for (i <- 0 until size) {
+    for (i <- 0 until nBytes) {
       ints(i) = (((value << i * 8) >>> 8 * (nBytes - 1)) & 0xFF).asInstanceOf[Int]
     }
 
     return ints
   }
 
+  def toByteArray(): Array[Byte] = {
+    val bytes = new Array[Byte](nBytes)
+
+    for (i <- 0 until nBytes) {
+      bytes(i) = (((value << i * 8) >>> 8 * (nBytes - 1)) & 0xFF).asInstanceOf[Byte]
+    }
+
+    return bytes
+  }
+
   override def compare(that: SmallByteArray): Int = this.value.compare(that.value)
 
   override def toString: String = {
-    val ints = toIntArray(nBytes)
+    val ints = toIntArray
     val strings = for (i <- 0 until nBytes) yield String.format(formatString,ints(i).asInstanceOf[Object])
 
     return strings.mkString(".")
