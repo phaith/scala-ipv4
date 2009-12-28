@@ -14,8 +14,20 @@ case class IpAddressRange(first: IpAddress, last: IpAddress) extends Ordered[IpA
     first.toString + " - " + last.toString
   }
 
-  def contains(address: IpAddress) = {
+  def contains(address: IpAddress): Boolean = {
     address >= first && address <= last
+  }
+
+  def contains(range: IpAddressRange): Boolean = {
+    contains(range.first) && contains(range.last)
+  }
+
+  def overlaps(range: IpAddressRange): Boolean = {
+    contains(range.first) || contains(range.last) || range.contains(first) || range.contains(last)
+  }
+
+  def length = {
+    last.value - first.value + 1
   }
 
   def addresses(): Stream[IpAddress] = {

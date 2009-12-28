@@ -16,6 +16,8 @@ private[datatypes] trait SmallByteArray extends Ordered[SmallByteArray] {
 
   val maxValue = Math.pow(2, nBytes * 8).toLong - 1
 
+  // TODO: do in properties (setter)
+
   if (nBytes < 0 || nBytes > 8) {
     throw new IllegalArgumentException("SmallByteArray can be used for arrays of length 0 to 8 only")
   }
