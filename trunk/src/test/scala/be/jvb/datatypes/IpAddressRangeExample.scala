@@ -42,5 +42,9 @@ class IpAddressRangeExample extends WordSpec with ShouldMatchers {
       range >= new IpAddressRange(new IpAddress("192.168.0.3"), new IpAddress("192.168.0.15")) should be(false)
     }
 
+    "have a method to subtract something from the range, resulting in to different ranges" in {
+      fail("todo")
+    }
+
   }
 }

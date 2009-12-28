@@ -46,6 +46,12 @@ class IpAddressTest extends FunSuite with Checkers {
     assert(Math.pow(2, 32).toLong - 1 === address.value)
   }
 
+  test("create from invalid string 0.0.0.500") {
+    intercept[IllegalArgumentException] {
+      new IpAddress("0.0.0.500")
+    }
+  }
+
   test("create from long too large") {
     intercept[IllegalArgumentException] {
       IpAddress(Math.pow(2, 32).toLong)
