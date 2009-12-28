@@ -7,6 +7,22 @@ import org.scalatest.matchers.ShouldMatchers
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
 class IpAddressExample extends WordSpec with ShouldMatchers {
+  "An IpAddress" should {
+    val address = new IpAddress("192.168.0.1")
+
+    "be constructable from a String" in {
+      new IpAddress("192.168.0.1") should be(address)
+    }
+
+    "be constructable from a long" in {
+      new IpAddress(3232235521L) should be(address)
+    }
+
+    "be constructable from a java.net.InetAddress" in {
+      new IpAddress(java.net.InetAddress.getByName("192.168.0.1")) should be(address)
+    }
+  }
+
   "An IpAddress" when {
     "constructed from a String" should {
       val address = new IpAddress("192.168.0.1")
@@ -15,9 +31,18 @@ class IpAddressExample extends WordSpec with ShouldMatchers {
         address.toString should be("192.168.0.1")
       }
     }
+
+    "constructed from a java.net.InetAddress" should {
+      val address = new IpAddress(java.net.InetAddress.getByName("192.168.0.1"))
+
+      "be convertable back into the same InetAddress" in {
+        address.toInetAddress should be(java.net.InetAddress.getByName("192.168.0.1"))
+      }
+    }
+
   }
 
-  "An Ipaddress" should {
+  "An IpAddress" should {
     val address = new IpAddress("192.168.0.1")
 
     "have an operator to find the next ip address" in {
@@ -37,9 +62,9 @@ class IpAddressExample extends WordSpec with ShouldMatchers {
       min - 1 should be(max)
     }
 
-    "be convertable to and constructable from a java.net.InetAddress" in {
-      address.toInetAddress should be(java.net.InetAddress.getByName("192.168.0.1"))
-      new IpAddress(java.net.InetAddress.getByName("192.168.0.1")) should be(address)
+    "be comparable" in {
+      address < address + 1 should be(true)
+      address >= address +1 should be(false)
     }
 
   }
