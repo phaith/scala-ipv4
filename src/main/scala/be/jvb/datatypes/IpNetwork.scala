@@ -7,28 +7,30 @@ import java.lang.String
  *
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
-case class IpNetwork(val address: IpAddress, val mask: IpNetworkMask) extends IpAddressRange(IpNetwork.first(address, mask), IpNetwork.last(address, mask)) {
-//  def this(first: IpAddress, last: IpAddress) = {
-//    this (first, last)
-//    assertFirstAndLastAreInSameNetwork
-//  }
+case class IpNetwork(val address: IpAddress, val mask: IpNetworkMask)
+        extends IpAddressRange(IpNetwork.first(address, mask), IpNetwork.last(address, mask)) {
+  def this(first: IpAddress, last: IpAddress) = this (first, IpNetworkMask.longestPrefixNetwork(first, last))
 
-  private def this(addressAndMask: (IpAddress, IpNetworkMask)) = this(addressAndMask._1, addressAndMask._2)
-  
-  def this(network: String) = this(IpNetwork.parseAddressAndMaskFromCidrNotation(network))
+  private def this(addressAndMask: (IpAddress, IpNetworkMask)) = this (addressAndMask._1, addressAndMask._2)
 
-  override def toString: String = first.toString + "/" + mask.prefix
+  def this(network: String) = this (IpNetwork.parseAddressAndMaskFromCidrNotation(network))
+
+  override def toString: String = first.toString + "/" + mask.prefixLength
 }
 
 object IpNetwork {
+  /**
+   * get the first address from a network which contains the given address.
+   */
   private[datatypes] def first(address: IpAddress, mask: IpNetworkMask): IpAddress = {
     new IpAddress(address.value & mask.value)
   }
 
-  // TODO: test this...
-
+  /**
+   * get the last address from a network which contains the given address.
+   */
   private[datatypes] def last(address: IpAddress, mask: IpNetworkMask): IpAddress = {
-    first(address, mask) + (0xFFFFFFFFL >> mask.prefix)
+    first(address, mask) + (0xFFFFFFFFL >> mask.prefixLength)
   }
 
   private[datatypes] def parseAddressAndMaskFromCidrNotation(cidrString: String): (IpAddress, IpNetworkMask) = {
@@ -56,9 +58,9 @@ object IpNetwork {
       if (mask.contains("."))
         new IpNetworkMask(mask)
       else
-        IpNetworkMask.fromPrefixNotation(Integer.parseInt(mask))
+        IpNetworkMask.fromPrefixLength(Integer.parseInt(mask))
     } catch {
-      case e:Exception => throw new IllegalArgumentException("not a valid network mask [" + mask + "]", e)
+      case e: Exception => throw new IllegalArgumentException("not a valid network mask [" + mask + "]", e)
     }
   }
 }

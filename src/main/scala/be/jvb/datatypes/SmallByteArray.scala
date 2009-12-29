@@ -33,6 +33,8 @@ private[datatypes] trait SmallByteArray extends Ordered[SmallByteArray] {
       ints(i) = (((value << i * 8) >>> 8 * (nBytes - 1)) & 0xFF).asInstanceOf[Int]
     }
 
+    ints.foreach((anInt) => assert(anInt >= 0 && anInt <= 255))
+
     return ints
   }
 
