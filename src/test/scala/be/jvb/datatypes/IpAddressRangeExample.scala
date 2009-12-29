@@ -42,8 +42,12 @@ class IpAddressRangeExample extends WordSpec with ShouldMatchers {
       range >= new IpAddressRange(new IpAddress("192.168.0.3"), new IpAddress("192.168.0.15")) should be(false)
     }
 
-    "have a method to subtract something from the range, resulting in to different ranges" in {
-      fail("todo")
+    "have a method to subtract something from the range, resulting in two different ranges" in {
+      val remainingRanges: List[IpAddressRange] =
+              new IpAddressRange(new IpAddress("192.168.0.1"), new IpAddress("192.168.0.2")) ::
+              new IpAddressRange(new IpAddress("192.168.0.4"), new IpAddress("192.168.0.5")) ::
+              Nil
+      range - new IpAddress("192.168.0.3") should be(remainingRanges)
     }
 
   }

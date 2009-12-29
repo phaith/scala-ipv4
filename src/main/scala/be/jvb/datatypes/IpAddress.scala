@@ -7,7 +7,7 @@ import java.net.InetAddress;
  *
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
-case class IpAddress(val value: Long) extends SmallByteArray {
+class IpAddress(val value: Long) extends SmallByteArray {
   def this(address: String) = this (SmallByteArray.parseAsLong(address, IpAddress.N_BYTES, IpAddress.RADIX))
 
   def this(inetAddress: InetAddress) = {

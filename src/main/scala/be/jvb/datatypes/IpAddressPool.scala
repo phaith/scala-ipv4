@@ -9,7 +9,7 @@ import scala.collection.jcl.TreeSet
  *
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
-case class IpAddressPool(override val first: IpAddress, override val last: IpAddress) extends IpAddressRange(first, last) {
+class IpAddressPool(override val first: IpAddress, override val last: IpAddress) extends IpAddressRange(first, last) {
 
   def this(range: IpAddressRange) = this (range.first, range.last)
 
@@ -42,7 +42,7 @@ case class IpAddressPool(override val first: IpAddress, override val last: IpAdd
   private def doAllocate(allocated: IpAddress, range: IpAddressRange): IpAddress = {
     // remove the range and replace with ranges without the allocated address
     freeRanges.remove(range)
-    freeRanges.addAll(range.remove(allocated))
+    freeRanges.addAll(range - allocated)
     return allocated
   }
 

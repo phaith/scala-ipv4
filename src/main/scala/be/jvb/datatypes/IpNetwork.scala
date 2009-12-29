@@ -7,7 +7,7 @@ import java.lang.String
  *
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
-case class IpNetwork(val address: IpAddress, val mask: IpNetworkMask)
+class IpNetwork(val address: IpAddress, val mask: IpNetworkMask)
         extends IpAddressRange(IpNetwork.first(address, mask), IpNetwork.last(address, mask)) {
   def this(first: IpAddress, last: IpAddress) = this (first, IpNetworkMask.longestPrefixNetwork(first, last))
 

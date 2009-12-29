@@ -1,5 +1,7 @@
 package be.jvb.datatypes
 
+import java.util.Arrays
+
 /**
  * Represents a byte array which is small enough to fit in a long (max 8 bytes).
  *
@@ -16,7 +18,7 @@ private[datatypes] trait SmallByteArray extends Ordered[SmallByteArray] {
 
   val maxValue = Math.pow(2, nBytes * 8).toLong - 1
 
-  // TODO: do in properties (setter)
+  // TODO: do in properties (setter) ?
 
   if (nBytes < 0 || nBytes > 8) {
     throw new IllegalArgumentException("SmallByteArray can be used for arrays of length 0 to 8 only")
@@ -48,11 +50,28 @@ private[datatypes] trait SmallByteArray extends Ordered[SmallByteArray] {
     return bytes
   }
 
-  override def compare(that: SmallByteArray): Int = this.value.compare(that.value)
+  override def compare(that: SmallByteArray): Int = {
+    this.value.compare(that.value)
+  }
+
+  override def equals(other: Any): Boolean = {
+    other match {
+      case that: SmallByteArray => that.canEqual(this) && this.value == that.value
+      case _ => false
+    }
+  }
+
+  protected def canEqual(other: Any): Boolean = {
+    other.isInstanceOf[SmallByteArray]
+  }
+
+  override def hashCode = {
+    value.hashCode
+  }
 
   override def toString: String = {
     val ints = toIntArray
-    val strings = for (i <- 0 until nBytes) yield String.format(formatString,ints(i).asInstanceOf[Object])
+    val strings = for (i <- 0 until nBytes) yield String.format(formatString, ints(i).asInstanceOf[Object])
 
     return strings.mkString(".")
   }
@@ -69,23 +88,29 @@ private[datatypes] trait SmallByteArray extends Ordered[SmallByteArray] {
 }
 
 object SmallByteArray {
-
-  // TODO: private in this package!
-  def parseAsLong(string:String, length:Int, radix:Int):Long = {
+  private[datatypes] def parseAsLong(string: String, length: Int, radix: Int): Long = {
     if (string eq null)
       throw new IllegalArgumentException("can not parse [null]")
 
     val longArray = parseAsLongArray(string, radix)
 
-    if (longArray.length != length)
-      throw new IllegalArgumentException("can not parse [" + string + "] into a SmallByteArray of [" + length + "] bytes")
-
+    validate(longArray, length)
     mergeBytesOfArrayIntoLong(longArray)
   }
 
-  private def parseAsLongArray(string: String, radix:Int): Array[Long] = {
-    // TODO: generates NPE -> wrap parseLong in a function that first checks and throws illegalargumentexception
+  private def parseAsLongArray(string: String, radix: Int): Array[Long] = {
     string.split("\\.").map(java.lang.Long.parseLong(_, radix))
+  }
+
+  private def validate(array: Array[Long], length: Int) = {
+    if (array.length != length)
+      throw new IllegalArgumentException("can not parse values [" + Arrays.toString(array) + "] into a SmallByteArray of [" + length + "] bytes")
+
+    if (!array.filter(_ < 0).isEmpty)
+      throw new IllegalArgumentException("each element should be positive [" + Arrays.toString(array) + "]");
+
+    if (!array.filter(_ > 255).isEmpty)
+      throw new IllegalArgumentException("each element should be less than 255 [" + Arrays.toString(array) + "]");
   }
 
   private def mergeBytesOfArrayIntoLong(array: Array[Long]): Long = {

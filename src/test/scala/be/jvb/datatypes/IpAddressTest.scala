@@ -54,13 +54,13 @@ class IpAddressTest extends FunSuite with Checkers {
 
   test("create from long too large") {
     intercept[IllegalArgumentException] {
-      IpAddress(Math.pow(2, 32).toLong)
+      new IpAddress(Math.pow(2, 32).toLong)
     }
   }
 
   test("create from long too small") {
     intercept[IllegalArgumentException] {
-      IpAddress(-1)
+      new IpAddress(-1)
     }
   }
 
