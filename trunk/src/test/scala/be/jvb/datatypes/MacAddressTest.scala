@@ -48,13 +48,13 @@ class MacAddressTest extends FunSuite with Checkers {
 
   test("create from long too large") {
     intercept[IllegalArgumentException] {
-      MacAddress(Math.pow(2, 48).toLong)
+      new MacAddress(Math.pow(2, 48).toLong)
     }
   }
 
   test("create from long too small") {
     intercept[IllegalArgumentException] {
-      MacAddress(-1)
+      new MacAddress(-1)
     }
   }
 

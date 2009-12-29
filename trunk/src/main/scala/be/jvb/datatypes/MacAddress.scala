@@ -5,7 +5,7 @@ package be.jvb.datatypes
  *
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
-case class MacAddress(val value: Long) extends SmallByteArray {
+class MacAddress(val value: Long) extends SmallByteArray {
 
   def this(address: String) = this(SmallByteArray.parseAsLong(address, MacAddress.N_BYTES, MacAddress.RADIX))
 

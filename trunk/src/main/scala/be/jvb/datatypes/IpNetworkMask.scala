@@ -7,7 +7,7 @@ import java.lang.IllegalArgumentException
  *
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
-case class IpNetworkMask(override val value: Long) extends IpAddress(value) {
+class IpNetworkMask(override val value: Long) extends IpAddress(value) {
   def this(address: String) = this (SmallByteArray.parseAsLong(address, IpAddress.N_BYTES, IpAddress.RADIX))
 
   checkMaskValidity
@@ -24,7 +24,7 @@ case class IpNetworkMask(override val value: Long) extends IpAddress(value) {
 }
 
 object IpNetworkMask {
-  private[datatypes] val VALID_MASK_VALUES = for (prefixLength <- 1 until 32) yield (fromPrefixLenthToLong(prefixLength))
+  private[datatypes] val VALID_MASK_VALUES = for (prefixLength <- 0 to 32) yield (fromPrefixLenthToLong(prefixLength))
 
   /**
    * Convert a prefix length (e.g. 24) into a network mask (e.g. 255.255.255.0). IpNetworkMask hasn't got a public constructor for this, because

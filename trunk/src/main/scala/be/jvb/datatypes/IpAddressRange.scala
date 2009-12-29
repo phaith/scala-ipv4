@@ -46,7 +46,7 @@ case class IpAddressRange(first: IpAddress, last: IpAddress) extends Ordered[IpA
   }
 
   // remove an address from the range, resulting in one, none or two new ranges
-  def remove(address: IpAddress): List[IpAddressRange] = {
+  def -(address: IpAddress): List[IpAddressRange] = {
     if (address eq null)
       throw new IllegalArgumentException("invalid address [null]")
 
