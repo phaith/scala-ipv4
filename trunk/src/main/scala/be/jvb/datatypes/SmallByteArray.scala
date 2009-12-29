@@ -10,15 +10,13 @@ import java.util.Arrays
 private[datatypes] trait SmallByteArray extends Ordered[SmallByteArray] {
   val value: Long
 
-  def nBytes: Int
+  protected def nBytes: Int
 
-  def radix: Int // TODO: only accept 10 or 16 -> enum?
+  protected def radix: Radix
 
-  def zeroPaddingUpTo: Int = 0
+  protected def zeroPaddingUpTo: Int = 0
 
   val maxValue = Math.pow(2, nBytes * 8).toLong - 1
-
-  // TODO: do in properties (setter) ?
 
   if (nBytes < 0 || nBytes > 8) {
     throw new IllegalArgumentException("SmallByteArray can be used for arrays of length 0 to 8 only")
@@ -77,7 +75,7 @@ private[datatypes] trait SmallByteArray extends Ordered[SmallByteArray] {
   }
 
   lazy val formatString = {
-    if (radix == 16 && zeroPaddingUpTo != 0)
+    if (radix == HEX() && zeroPaddingUpTo != 0)
       "%0" + zeroPaddingUpTo + "X"
     else if (zeroPaddingUpTo != 0)
       "%0" + zeroPaddingUpTo + "d"
@@ -88,7 +86,7 @@ private[datatypes] trait SmallByteArray extends Ordered[SmallByteArray] {
 }
 
 object SmallByteArray {
-  private[datatypes] def parseAsLong(string: String, length: Int, radix: Int): Long = {
+  private[datatypes] def parseAsLong(string: String, length: Int, radix: Radix): Long = {
     if (string eq null)
       throw new IllegalArgumentException("can not parse [null]")
 
@@ -98,8 +96,8 @@ object SmallByteArray {
     mergeBytesOfArrayIntoLong(longArray)
   }
 
-  private def parseAsLongArray(string: String, radix: Int): Array[Long] = {
-    string.split("\\.").map(java.lang.Long.parseLong(_, radix))
+  private def parseAsLongArray(string: String, radix: Radix): Array[Long] = {
+    string.split("\\.").map(java.lang.Long.parseLong(_, radix.radix))
   }
 
   private def validate(array: Array[Long], length: Int) = {

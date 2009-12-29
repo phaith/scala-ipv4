@@ -7,11 +7,11 @@ package be.jvb.datatypes
  */
 class MacAddress(val value: Long) extends SmallByteArray {
 
-  def this(address: String) = this(SmallByteArray.parseAsLong(address, MacAddress.N_BYTES, MacAddress.RADIX))
+  def this(address: String) = this(SmallByteArray.parseAsLong(address, MacAddress.N_BYTES, HEX()))
 
-  def nBytes = MacAddress.N_BYTES
+  protected def nBytes = MacAddress.N_BYTES
 
-  def radix = MacAddress.RADIX
+  protected def radix = HEX()
 
   override def zeroPaddingUpTo = 2
 
@@ -30,8 +30,6 @@ class MacAddress(val value: Long) extends SmallByteArray {
 object MacAddress {
   val N_BYTES = 6
 
-  val RADIX = 16
-  
 //  def apply(string: String): MacAddress = new MacAddress(SmallByteArray.parseAsLong(string, N_BYTES))
 
 //  def unapply(macAddress: MacAddress): Some[String] = macAddress.toString
