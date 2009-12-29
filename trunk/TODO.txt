@@ -1,5 +1,5 @@
 - move to github (or maybe not)
-- add mac address pool, and abstract the pool concept from ip address pool, and make sure they are thread safe!
+- add mac address pool, and abstract the pool concept from ip address pool, and make sure they are thread safe!... or maybe get rid of mac address all together and focus on ip addresses only?
 - verify pool performance
 - implement iterable or whatever to be able to loop through ip address ranges etc
 - check TODO's in code (constructor versus factory methods -> all constructors? or different apply/unapply combinations?, ...)
@@ -10,5 +10,5 @@
 - rename the project
 - javadoc (@author tags etc)
 - be inspired by some of the functionality in http://www.rhythm.cx/~steve/devel/iptree/
-- do I need to use case classes?
+- do I need to use case classes? maybe not, and make string constructor primary in stead of long constructor... ?
 - blog it

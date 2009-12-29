@@ -76,6 +76,7 @@ class IpAddressTest extends FunSuite with Checkers {
 
   test("addition") {
     assert(new IpAddress("1.2.3.4") === new IpAddress("1.2.3.3") + 1)
+    assert(new IpAddress("1.2.4.4") === new IpAddress("1.2.3.10") + 250)
   }
 
   test("substraction") {
@@ -84,7 +85,7 @@ class IpAddressTest extends FunSuite with Checkers {
 
   test("addition and substraction inverse each other") {
     assert(new IpAddress("1.2.3.4") - 1 + 1 === new IpAddress("1.2.3.4"))
-    assert(new IpAddress("1.2.3.4") + 6 - 6 === new IpAddress("1.2.3.4"))
+    assert(new IpAddress("1.2.3.4") + 345 - 345 === new IpAddress("1.2.3.4"))
   }
 
   test("addition overflow") {
