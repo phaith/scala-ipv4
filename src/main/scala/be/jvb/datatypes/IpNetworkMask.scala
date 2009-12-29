@@ -8,7 +8,7 @@ import java.lang.IllegalArgumentException
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
 class IpNetworkMask(override val value: Long) extends IpAddress(value) {
-  def this(address: String) = this (SmallByteArray.parseAsLong(address, IpAddress.N_BYTES, IpAddress.RADIX))
+  def this(address: String) = this (SmallByteArray.parseAsLong(address, IpAddress.N_BYTES, DEC()))
 
   checkMaskValidity
 

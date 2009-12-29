@@ -8,15 +8,15 @@ import java.net.InetAddress;
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
 class IpAddress(val value: Long) extends SmallByteArray {
-  def this(address: String) = this (SmallByteArray.parseAsLong(address, IpAddress.N_BYTES, IpAddress.RADIX))
+  def this(address: String) = this (SmallByteArray.parseAsLong(address, IpAddress.N_BYTES, DEC()))
 
   def this(inetAddress: InetAddress) = {
     this (if (inetAddress == null) throw new IllegalArgumentException("can not create from [null]") else inetAddress.getHostAddress())
   }
 
-  def nBytes = IpAddress.N_BYTES
+  protected def nBytes = IpAddress.N_BYTES
 
-  def radix = IpAddress.RADIX
+  protected def radix = DEC()
 
   /**
    * Addition. Will never overflow, but wraps around when the highest ip address has been reached.
@@ -34,8 +34,6 @@ class IpAddress(val value: Long) extends SmallByteArray {
 
 object IpAddress {
   val N_BYTES = 4
-
-  val RADIX = 10;
 
 //  def apply(string: String): IpAddress = new IpAddress(SmallByteArray.parseAsLong(string, N_BYTES, radix))
 
