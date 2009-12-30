@@ -6,3 +6,4 @@
 - javadoc (@author tags etc)
 - be inspired by some of the functionality in http://www.rhythm.cx/~steve/devel/iptree/
 - switch to scala 2.8
+- add java interfaces?
