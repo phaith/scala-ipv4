@@ -1,4 +1,4 @@
-package be.jvb.datatypes
+package be.jvb.iptypes
 
 import org.scalacheck.Gen
 import org.scalacheck.Prop

@@ -1,4 +1,4 @@
-package be.jvb.datatypes
+package be.jvb.iptypes
 
 /**
  * Represents a continuous range of IPv4 ip addresses (bounds included). Ip address ranges are ordered on the first

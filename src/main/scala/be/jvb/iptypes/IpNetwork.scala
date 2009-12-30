@@ -1,4 +1,4 @@
-package be.jvb.datatypes
+package be.jvb.iptypes
 
 import java.lang.String
 
@@ -22,18 +22,18 @@ object IpNetwork {
   /**
    * get the first address from a network which contains the given address.
    */
-  private[datatypes] def first(address: IpAddress, mask: IpNetworkMask): IpAddress = {
+  private[iptypes] def first(address: IpAddress, mask: IpNetworkMask): IpAddress = {
     new IpAddress(address.value & mask.value)
   }
 
   /**
    * get the last address from a network which contains the given address.
    */
-  private[datatypes] def last(address: IpAddress, mask: IpNetworkMask): IpAddress = {
+  private[iptypes] def last(address: IpAddress, mask: IpNetworkMask): IpAddress = {
     first(address, mask) + (0xFFFFFFFFL >> mask.prefixLength)
   }
 
-  private[datatypes] def parseAddressAndMaskFromCidrNotation(cidrString: String): (IpAddress, IpNetworkMask) = {
+  private[iptypes] def parseAddressAndMaskFromCidrNotation(cidrString: String): (IpAddress, IpNetworkMask) = {
     if (!cidrString.contains("/"))
       throw new IllegalArgumentException("no CIDR format [" + cidrString + "]")
 

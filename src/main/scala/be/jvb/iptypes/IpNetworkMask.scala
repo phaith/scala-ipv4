@@ -1,4 +1,4 @@
-package be.jvb.datatypes
+package be.jvb.iptypes
 
 import java.lang.IllegalArgumentException
 
@@ -24,7 +24,7 @@ class IpNetworkMask(override val value: Long) extends IpAddress(value) {
 }
 
 object IpNetworkMask {
-  private[datatypes] val VALID_MASK_VALUES = for (prefixLength <- 0 to 32) yield (fromPrefixLenthToLong(prefixLength))
+  private[iptypes] val VALID_MASK_VALUES = for (prefixLength <- 0 to 32) yield (fromPrefixLenthToLong(prefixLength))
 
   /**
    * Convert a prefix length (e.g. 24) into a network mask (e.g. 255.255.255.0). IpNetworkMask hasn't got a public constructor for this, because
@@ -34,11 +34,11 @@ object IpNetworkMask {
     new IpNetworkMask(fromPrefixLenthToLong(prefixLength))
   }
 
-  private[datatypes] def fromPrefixLenthToLong(prefixLength: Int): Long = {
+  private[iptypes] def fromPrefixLenthToLong(prefixLength: Int): Long = {
     (((1L << 32) - 1) << (32 - prefixLength)) & 0xFFFFFFFFL
   }
 
-  private[datatypes] def fromLongToPrefixLength(value: Long): Int = {
+  private[iptypes] def fromLongToPrefixLength(value: Long): Int = {
     val lsb: Long = value & 0xFFFFFFFFL
     var result: Int = 0;
     var bit: Long = 1L << 31;

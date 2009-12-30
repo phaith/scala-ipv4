@@ -1,4 +1,4 @@
-package be.jvb.datatypes
+package be.jvb.iptypes
 
 import java.util.Arrays
 
@@ -7,7 +7,7 @@ import java.util.Arrays
  *
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
-private[datatypes] trait SmallByteArray extends Ordered[SmallByteArray] {
+private[iptypes] trait SmallByteArray extends Ordered[SmallByteArray] {
   val value: Long
 
   protected def nBytes: Int
@@ -86,7 +86,7 @@ private[datatypes] trait SmallByteArray extends Ordered[SmallByteArray] {
 }
 
 object SmallByteArray {
-  private[datatypes] def parseAsLong(string: String, length: Int, radix: Radix): Long = {
+  private[iptypes] def parseAsLong(string: String, length: Int, radix: Radix): Long = {
     if (string eq null)
       throw new IllegalArgumentException("can not parse [null]")
 
