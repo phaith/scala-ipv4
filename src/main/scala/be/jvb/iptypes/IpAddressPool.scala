@@ -159,4 +159,22 @@ class IpAddressPool(override val first: IpAddress, override val last: IpAddress,
   }
 
   // TODO: toStringRepresentation which can also be parsed back into an IpAddressPool
+
+  // equals implemented as suggested in staircase book
+
+  override def equals(other: Any): Boolean = {
+    other match {
+      case that: IpAddressPool => super.equals(that) && this.freeRanges == that.freeRanges
+      case _ => false
+    }
+  }
+
+  protected override def canEqual(other: Any): Boolean = {
+    other.isInstanceOf[IpAddressPool]
+  }
+
+  override def hashCode = {
+    41 * (41 + first.hashCode) + last.hashCode
+  }
+
 }
