@@ -16,7 +16,7 @@ class IpAddressRangeExample extends WordSpec with ShouldMatchers {
     }
 
     "have a length equal to the number of addresses in the range" in {
-      range.length should be(range.addresses.size)
+      range should have length(range.addresses.size)
     }
 
     "have a method to check if it contains an address" in {
@@ -37,9 +37,9 @@ class IpAddressRangeExample extends WordSpec with ShouldMatchers {
     }
 
     "be comparable" in {
-      range > new IpAddressRange(new IpAddress("192.168.0.3"), new IpAddress("192.168.0.5")) should be(false)
-      range < new IpAddressRange(new IpAddress("192.168.0.13"), new IpAddress("192.168.0.15")) should be(true)
-      range >= new IpAddressRange(new IpAddress("192.168.0.3"), new IpAddress("192.168.0.15")) should be(false)
+      range should not be > (new IpAddressRange(new IpAddress("192.168.0.3"), new IpAddress("192.168.0.5")))
+      range should be < (new IpAddressRange(new IpAddress("192.168.0.13"), new IpAddress("192.168.0.15")))
+      range should not be >= (new IpAddressRange(new IpAddress("192.168.0.3"), new IpAddress("192.168.0.15")))
     }
 
     "have a method to subtract something from the range, resulting in two different ranges" in {
