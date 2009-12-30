@@ -10,84 +10,143 @@ import org.scalatest.FunSuite
 @RunWith(classOf[JUnitRunner])
 class IpAddressPoolTest extends FunSuite {
   test("allocate next") {
-    val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.6"))
-    assert(Some(new IpAddress("1.2.3.4")) === pool.allocate)
-    assert(Some(new IpAddress("1.2.3.5")) === pool.allocate)
-    assert(Some(new IpAddress("1.2.3.6")) === pool.allocate)
+    var pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.6"))
+
+    pool.allocate() match {
+      case (p, allocated) => {
+        pool = p
+        assert(Some(new IpAddress("1.2.3.4")) === allocated)
+      }
+    }
+
+    pool.allocate() match {
+      case (p, allocated) => {
+        pool = p
+        assert(Some(new IpAddress("1.2.3.5")) === allocated)
+      }
+    }
+
+    pool.allocate() match {
+      case (p, allocated) => {
+        pool = p
+        assert(Some(new IpAddress("1.2.3.6")) === allocated)
+      }
+    }
   }
 
   test("allocate to exhaustion") {
-    val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.4"))
-    assert(Some(new IpAddress("1.2.3.4")) === pool.allocate)
-    assert(None === pool.allocate)
+    var pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.4"))
+
+    pool.allocate() match {
+      case (p, allocated) => {
+        pool = p
+        assert(Some(new IpAddress("1.2.3.4")) === allocated)
+      }
+    }
+
+    pool.allocate() match {
+      case (p, allocated) => {
+        pool = p
+        assert(None === allocated)
+      }
+    }
   }
 
   test("allocate specific address") {
     val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.6"))
-    assert(Some(new IpAddress("1.2.3.5")) === pool.allocate(new IpAddress("1.2.3.5")))
+    assert(Some(new IpAddress("1.2.3.5")) === pool.allocate(new IpAddress("1.2.3.5"))._2)
   }
 
   test("allocate unfree address") {
-    val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.6"))
-    assert(Some(new IpAddress("1.2.3.5")) === pool.allocate(new IpAddress("1.2.3.5")))
-    assert(None === pool.allocate(new IpAddress("1.2.3.5")))
+    var pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.6"))
+
+    pool.allocate(new IpAddress("1.2.3.5")) match {
+      case (p, allocated) => {
+        pool = p
+        assert(Some(new IpAddress("1.2.3.5")) === allocated)
+      }
+    }
+
+    pool.allocate(new IpAddress("1.2.3.5")) match {
+      case (p, allocated) => {
+        pool = p
+        assert(None === allocated)
+      }
+    }
   }
 
   test("allocate and free") {
-    val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.10"))
+    var pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.10"))
     assert(pool.isFree(new IpAddress("1.2.3.6")))
-    pool.allocate(new IpAddress("1.2.3.6"))
-    assert(!pool.isFree(new IpAddress("1.2.3.6")))
-    pool.allocate(new IpAddress("1.2.3.8"))
-    assert(pool.isFree(new IpAddress("1.2.3.9")))
-    pool.allocate(new IpAddress("1.2.3.9"))
-    assert(!pool.isFree(new IpAddress("1.2.3.9")))
+
+    pool.allocate(new IpAddress("1.2.3.6")) match {
+      case (p, allocated) => {
+        pool = p
+        assert(!pool.isFree(new IpAddress("1.2.3.6")))
+      }
+    }
+
+    pool.allocate(new IpAddress("1.2.3.8")) match {
+      case (p, allocated) => {
+        pool = p
+        assert(pool.isFree(new IpAddress("1.2.3.9")))
+      }
+    }
+
+    pool.allocate(new IpAddress("1.2.3.9")) match {
+      case (p, allocated) => {
+        pool = p
+        assert(!pool.isFree(new IpAddress("1.2.3.9")))
+      }
+    }
   }
 
   test("deallocate and free") {
-    val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.10"))
-    pool.allocate(new IpAddress("1.2.3.6"))
-    pool.allocate(new IpAddress("1.2.3.8"))
-
+    var pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.10"))
+    pool = pool.allocate(new IpAddress("1.2.3.6"))._1
+    pool = pool.allocate(new IpAddress("1.2.3.8"))._1
     assert(!pool.isFree(new IpAddress("1.2.3.8")))
-    pool.deAllocate(new IpAddress("1.2.3.8"))
+    pool = pool.deAllocate(new IpAddress("1.2.3.8"))
     assert(pool.isFree(new IpAddress("1.2.3.8")))
   }
 
   test("deallocate defragmentation") {
-    val pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.11"))
-    pool.allocate(new IpAddress("1.2.3.5"))
-    pool.allocate(new IpAddress("1.2.3.7"))
-    pool.allocate(new IpAddress("1.2.3.8"))
-    pool.allocate(new IpAddress("1.2.3.9"))
-    pool.allocate(new IpAddress("1.2.3.10"))
+    var pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.11"))
+    pool = pool.allocate(new IpAddress("1.2.3.5"))._1
+    pool = pool.allocate(new IpAddress("1.2.3.7"))._1
+    pool = pool.allocate(new IpAddress("1.2.3.8"))._1
+    pool = pool.allocate(new IpAddress("1.2.3.9"))._1
+    pool = pool.allocate(new IpAddress("1.2.3.10"))._1
     expect(3) {pool.fragments}
 
-    pool.deAllocate(new IpAddress("1.2.3.5")) // needs to merge two fragments
+    pool = pool.deAllocate(new IpAddress("1.2.3.5")) // needs to merge two fragments
     assert(pool.isFree(new IpAddress("1.2.3.5")))
     expect(2) {pool.fragments}
-    pool.deAllocate(new IpAddress("1.2.3.8")) // creates new fragment
+
+    pool = pool.deAllocate(new IpAddress("1.2.3.8")) // creates new fragment
     expect(3) {pool.fragments}
     assert(pool.isFree(new IpAddress("1.2.3.8")))
-    pool.deAllocate(new IpAddress("1.2.3.9")) // needs to merge one fragment
+
+    pool = pool.deAllocate(new IpAddress("1.2.3.9")) // needs to merge one fragment
     expect(3) {pool.fragments}
     assert(pool.isFree(new IpAddress("1.2.3.9")))
   }
 
-  
-  ignore("performance") {
+
+  ignore("performance test shouldn't crash with stack overflow error") {
     // create very large pool
-    val pool = new IpAddressPool(new IpAddress("1.0.0.0"), new IpAddress("1.2.255.255"))
+    var pool = new IpAddressPool(new IpAddress("1.0.0.0"), new IpAddress("1.2.255.255"))
 
     // allocate one address every two addresses (lots of fragmentation)
-    val start = System.nanoTime();
     var toAllocate = pool.first
     while (pool.contains(toAllocate)) {
-      pool.allocate(toAllocate)
+      pool.allocate(toAllocate) match {
+        case (p, allocated) => {
+          pool = p
+          assert(allocated === Some(toAllocate))
+        }
+      }
       toAllocate += 2
     }
-
-    // should be finished in 5 seconds
-    assert((System.nanoTime() - start) <= 5000000000L);
   }
 }
