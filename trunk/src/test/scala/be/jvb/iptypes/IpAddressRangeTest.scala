@@ -43,4 +43,29 @@ class IpAddressRangeTest extends FunSuite {
     range.addresses().foreach(element => assert(range.contains(element)))
   }
 
+  test("compare") {
+    val range1 = new IpAddressRange(new IpAddress("1.0.0.1"), new IpAddress("1.0.0.1"))
+    val range2 = new IpAddressRange(new IpAddress("1.0.0.3"), new IpAddress("1.0.0.3"))
+    val range3 = new IpAddressRange(new IpAddress("1.0.0.5"), new IpAddress("1.0.0.5"))
+    val range4 = new IpAddressRange(new IpAddress("1.0.0.7"), new IpAddress("1.2.255.255"))
+
+    assert(range1 < range2)
+    assert(range1 < range3)
+    assert(range1 < range4)
+
+    assert(range2 > range1)
+    assert(range2 < range3)
+    assert(range2 < range4)
+
+    assert(range3 > range1)
+    assert(range3 > range2)
+    assert(range3 < range4)
+
+    assert(range4 > range1)
+    assert(range4 > range2)
+    assert(range4 > range3)
+
+
+  }
+
 }
