@@ -8,13 +8,9 @@ package be.jvb.iptypes
  * @param first first address in the range
  * @param last last address in the range
  */
-case class IpAddressRange(first: IpAddress, last: IpAddress) extends Ordered[IpAddressRange] {
+class IpAddressRange(val first: IpAddress, val last: IpAddress) extends Ordered[IpAddressRange] {
   if (last < first)
     throw new IllegalArgumentException("Cannot create ip address range with last address > first address")
-
-  override def toString: String = {
-    first.toString + " - " + last.toString
-  }
 
   def contains(address: IpAddress): Boolean = {
     address >= first && address <= last
@@ -79,5 +75,26 @@ case class IpAddressRange(first: IpAddress, last: IpAddress) extends Ordered[IpA
       new IpAddressRange(first, address)
     else
       this
+  }
+
+  override def toString: String = {
+    first.toString + " - " + last.toString
+  }
+
+  // equals implemented as suggested in staircase book
+
+  override def equals(other: Any): Boolean = {
+    other match {
+      case that: IpAddressRange => that.canEqual(this) && this.first == that.first && this.last == that.last
+      case _ => false
+    }
+  }
+
+  protected def canEqual(other: Any): Boolean = {
+    other.isInstanceOf[IpAddressRange]
+  }
+
+  override def hashCode = {
+    41 * (41 + first.hashCode) + last.hashCode
   }
 }
