@@ -6,11 +6,11 @@ package be.jvb.iptypes
  * @author Jan Van Besien
  */
 private[iptypes] sealed trait Radix {
-  def radix:Int
+  val radix:Int
 }
-private[iptypes] final case class HEX extends Radix {
-  override def radix = 16
+private[iptypes] final case class HEX() extends Radix {
+  override val radix = 16
 }
-private[iptypes] final case class DEC extends Radix {
-  override def radix = 10
+private[iptypes] final case class DEC() extends Radix {
+  override val radix = 10
 }

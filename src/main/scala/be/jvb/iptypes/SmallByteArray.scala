@@ -75,12 +75,20 @@ private[iptypes] trait SmallByteArray extends Ordered[SmallByteArray] {
   }
 
   lazy val formatString = {
-    if (radix == HEX() && zeroPaddingUpTo != 0)
-      "%0" + zeroPaddingUpTo + "X"
-    else if (zeroPaddingUpTo != 0)
-      "%0" + zeroPaddingUpTo + "d"
-    else
-      "%d"
+    radix match {
+      case HEX() => {
+        if (zeroPaddingUpTo != 0)
+          "%0" + zeroPaddingUpTo + "X"
+        else
+          "%X"
+      }
+      case DEC() => {
+        if (zeroPaddingUpTo != 0)
+          "%0" + zeroPaddingUpTo + "d"
+        else
+          "%d"
+      }
+    }
   }
 
 }
