@@ -92,9 +92,10 @@ class IpAddressPool(override val first: IpAddress, override val last: IpAddress,
    */
   private def doAllocate(toAllocate: IpAddress, range: IpAddressRange): (IpAddressPool, Option[IpAddress]) = {
     // remove the range and replace with ranges without the allocated address
+    val newRanges = range - toAllocate
     // note: the cast to SortedSet is a workaround until scala 2.8 (http://stackoverflow.com/questions/1271426/scala-immutable-sortedset-are-not-stable-on-deletion)
-    val remainingRanges: SortedSet[IpAddressRange] = (freeRanges - range).asInstanceOf[SortedSet[IpAddressRange]] ++ (range - toAllocate)
-    return (new IpAddressPool(this.first, this.last, remainingRanges), Some(toAllocate))
+    val remainingRanges = (freeRanges ++ newRanges).asInstanceOf[SortedSet[IpAddressRange]] - range
+    return (new IpAddressPool(this.first, this.last, remainingRanges.asInstanceOf[SortedSet[IpAddressRange]]), Some(toAllocate))
   }
 
   /**

@@ -133,7 +133,7 @@ class IpAddressPoolTest extends FunSuite {
   }
 
 
-  ignore("performance test shouldn't crash with stack overflow error") {
+  test("performance test shouldn't crash with stack overflow error") {
     // create very large pool
     var pool = new IpAddressPool(new IpAddress("1.0.0.0"), new IpAddress("1.2.255.255"))
 
@@ -149,9 +149,6 @@ class IpAddressPoolTest extends FunSuite {
         }
       }
       toAllocate += 2
-      if (count % 1000 == 0) {
-        println(count)
-      }
     }
   }
 }
