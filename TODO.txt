@@ -8,3 +8,4 @@
 - javadoc (@author tags etc)
 - be inspired by some of the functionality in http://www.rhythm.cx/~steve/devel/iptree/
 - blog it
+- switch to scala 2.8
