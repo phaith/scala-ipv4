@@ -2,8 +2,7 @@
 - implement iterable or whatever to be able to loop through ip address ranges etc
 - apply/unapply
 - enhance BDD examples (the DSL allows for finer syntax than what I'm currently doing)
-- rename the project to iptypes?
-- javadoc (@author tags etc)
 - be inspired by some of the functionality in http://www.rhythm.cx/~steve/devel/iptree/
 - switch to scala 2.8
 - add java interfaces?
+- make available (maven repo)
