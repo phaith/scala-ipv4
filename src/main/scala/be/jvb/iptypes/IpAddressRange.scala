@@ -1,10 +1,12 @@
 package be.jvb.iptypes
 
 /**
- * Represents a continuous range of IPv4 ip addresses (bounds included). Ip address ranges are ordered on the first
- * address, or on the second address if the first is equal.
+ * Represents a continuous range of IPv4 ip addresses (bounds included).
  *
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
+ *
+ * @param first first address in the range
+ * @param last last address in the range
  */
 case class IpAddressRange(first: IpAddress, last: IpAddress) extends Ordered[IpAddressRange] {
   if (last < first)
@@ -38,6 +40,9 @@ case class IpAddressRange(first: IpAddress, last: IpAddress) extends Ordered[IpA
     }
   }
 
+  /**
+   * Ip address ranges are ordered on the first address, or on the second address if the first is equal.
+   */
   def compare(that: IpAddressRange): Int = {
     if (this.first != that.first)
       this.first.compare(that.first)
@@ -45,7 +50,9 @@ case class IpAddressRange(first: IpAddress, last: IpAddress) extends Ordered[IpA
       this.last.compare(that.last)
   }
 
-  // remove an address from the range, resulting in one, none or two new ranges
+  /**
+   * Remove an address from the range, resulting in one, none or two new ranges.
+   */
   def -(address: IpAddress): List[IpAddressRange] = {
     if (address eq null)
       throw new IllegalArgumentException("invalid address [null]")
@@ -63,7 +70,7 @@ case class IpAddressRange(first: IpAddress, last: IpAddress) extends Ordered[IpA
   }
 
   /**
-   *  Extend the range such that the given address is included.
+   * Extend the range just enough at its head or tail such that the given address is included.
    */
   def +(address: IpAddress): IpAddressRange = {
     if (address < first)
