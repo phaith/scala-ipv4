@@ -1,4 +1,4 @@
-package be.jvb.datatypes
+package be.jvb.iptypes
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
@@ -139,14 +139,19 @@ class IpAddressPoolTest extends FunSuite {
 
     // allocate one address every two addresses (lots of fragmentation)
     var toAllocate = pool.first
+    var count = 0
     while (pool.contains(toAllocate)) {
       pool.allocate(toAllocate) match {
         case (p, allocated) => {
           pool = p
           assert(allocated === Some(toAllocate))
+          count += 1
         }
       }
       toAllocate += 2
+      if (count % 1000 == 0) {
+        println(count)
+      }
     }
   }
 }

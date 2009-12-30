@@ -1,4 +1,4 @@
-package be.jvb.datatypes
+package be.jvb.iptypes
 
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite

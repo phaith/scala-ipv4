@@ -1,4 +1,4 @@
-package be.jvb.datatypes
+package be.jvb.iptypes
 
 /**
  * Represents a MAC address.

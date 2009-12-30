@@ -1,11 +1,10 @@
-- verify pool performance
+- verify pool performance -> stackoverflow in redblack ?
 - implement iterable or whatever to be able to loop through ip address ranges etc
-- check TODO's in code (constructor versus factory methods -> all constructors? or different apply/unapply combinations?, ...)
 - apply/unapply
 - enhance BDD examples (the DSL allows for finer syntax than what I'm currently doing)
 - change package name iptypes
 - rename the project iptypes
 - javadoc (@author tags etc)
 - be inspired by some of the functionality in http://www.rhythm.cx/~steve/devel/iptree/
-- blog it
+- blog it/document it
 - switch to scala 2.8
