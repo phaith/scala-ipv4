@@ -46,9 +46,15 @@ class IpAddress(val value: Long) extends SmallByteArray {
 object IpAddress {
   val N_BYTES = 4
 
-//  def apply(string: String): IpAddress = new IpAddress(SmallByteArray.parseAsLong(string, N_BYTES, radix))
+  def apply(string: String): IpAddress = new IpAddress(SmallByteArray.parseAsLong(string, N_BYTES, DEC()))
 
-//  def unapply(ipAddress: IpAddress): Some[String] = ipAddress.toString
+  def unapply(ipAddress: IpAddress): Option[String] = {
+    return Some(ipAddress.toString)
+  }
+
+//  def unapply(ipAddress: IpAddress): Option[Long] = {
+//    return Some(ipAddress.value)
+//  }
 
 }
 
