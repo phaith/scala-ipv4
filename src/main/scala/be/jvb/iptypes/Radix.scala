@@ -3,7 +3,7 @@ package be.jvb.iptypes
 /**
  * Enumeration of possible radix values (hexadecimal and decimal).
  *
- * @author Jan Van Besien
+ * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
  */
 private[iptypes] sealed trait Radix {
   val radix:Int
