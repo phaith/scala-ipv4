@@ -10,10 +10,13 @@ import java.util.Arrays
 private[iptypes] trait SmallByteArray extends Ordered[SmallByteArray] {
   val value: Long
 
+  /** How many bytes do we use (max 8). */
   protected def nBytes: Int
 
+  /** In what radix do we represent the bytes when converting to a string. */
   protected def radix: Radix
 
+  /** Do we need to padd the bytes with zeros when converting to a string. */
   protected def zeroPaddingUpTo: Int = 0
 
   val maxValue = Math.pow(2, nBytes * 8).toLong - 1
@@ -26,6 +29,9 @@ private[iptypes] trait SmallByteArray extends Ordered[SmallByteArray] {
     throw new IllegalArgumentException("out of range [0x" + java.lang.Long.toHexString(value) + "] with [" + nBytes + "] bytes")
   }
 
+  /**
+   * @return integer array of the bytes in this byte array.
+   */
   def toIntArray(): Array[Int] = {
     val ints = new Array[Int](nBytes)
 
@@ -38,6 +44,9 @@ private[iptypes] trait SmallByteArray extends Ordered[SmallByteArray] {
     return ints
   }
 
+  /**
+   * @return byte array of the bytes in this byte array.
+   */
   def toByteArray(): Array[Byte] = {
     val bytes = new Array[Byte](nBytes)
 
@@ -51,6 +60,8 @@ private[iptypes] trait SmallByteArray extends Ordered[SmallByteArray] {
   override def compare(that: SmallByteArray): Int = {
     this.value.compare(that.value)
   }
+
+  // equals implemented as suggested in staircase book
 
   override def equals(other: Any): Boolean = {
     other match {
@@ -67,6 +78,9 @@ private[iptypes] trait SmallByteArray extends Ordered[SmallByteArray] {
     value.hashCode
   }
 
+  /**
+   * @return String representation of the byte array, with "." between every byte.
+   */
   override def toString: String = {
     val ints = toIntArray
     val strings = for (i <- 0 until nBytes) yield String.format(formatString, ints(i).asInstanceOf[Object])
@@ -74,7 +88,7 @@ private[iptypes] trait SmallByteArray extends Ordered[SmallByteArray] {
     return strings.mkString(".")
   }
 
-  lazy val formatString = {
+  private lazy val formatString = {
     radix match {
       case HEX() => {
         if (zeroPaddingUpTo != 0)

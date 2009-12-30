@@ -3,10 +3,15 @@ package be.jvb.iptypes
 import scala.collection.immutable._
 
 /**
- * Represents a pool of IPv4 addresses. A pool is a range of addresses, from which some can be "in use" and some can be
+ * Represents a pool of IPv4 addresses. A pool is a range of addresses, from which some can be "allocated" and some can be
  * "free".
  *
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
+ *
+ * @param first first address in the pool
+ * @param last last address in the pool
+ * @param freeRanges sorted set of all free ranges in this pool. All free ranges should be contained in the range from first to last,
+ *                   and should not overlap
  */
 class IpAddressPool(override val first: IpAddress, override val last: IpAddress, val freeRanges: SortedSet[IpAddressRange])
         extends IpAddressRange(first, last) {
@@ -15,15 +20,28 @@ class IpAddressPool(override val first: IpAddress, override val last: IpAddress,
     // TODO: validate that the free ranges set is a valid set (no overlapping, not outside boundaries, ...)
   }
 
+  // TODO: in allocate and deallocate, check that the address is actually contained in the pool..
+
+  /**
+   * Construct a pool which is completely free.
+   */
   def this(first: IpAddress, last: IpAddress) = {
     // the whole ranges is free initially
     this (first, last, TreeSet[IpAddressRange](new IpAddressRange(first, last)))
   }
 
+  /**
+   * Construct a pool which is completely free from an existing address range.
+   */
   def this(range: IpAddressRange) = {
     this (range.first, range.last)
   }
 
+  /**
+   * Allocate the first free address in the pool.
+   *
+   * @returns the pool after allocation and the allocated address (or None if no address was free)
+   */
   def allocate(): (IpAddressPool, Option[IpAddress]) = {
     if (!isExhausted) {
       // get the first range of free addresses, and take the first address of that range
@@ -35,6 +53,12 @@ class IpAddressPool(override val first: IpAddress, override val last: IpAddress,
     }
   }
 
+  /**
+   * Allocate the given address in the pool.
+   *
+   * @param toAllocate address to allocate in the pool
+   * @returns the pool after allocation and the allocated address (or None if the address was not free in this pool)
+   */
   def allocate(toAllocate: IpAddress): (IpAddressPool, Option[IpAddress]) = {
     // go find the range that contains the requested address
     findFreeRangeContaining(toAllocate) match {
@@ -73,6 +97,11 @@ class IpAddressPool(override val first: IpAddress, override val last: IpAddress,
     return (new IpAddressPool(this.first, this.last, remainingRanges), Some(toAllocate))
   }
 
+  /**
+   * Deallocate the given address in the pool. The given address will be free in the returned pool.
+   *
+   * @returns the pool after deallocation
+   */
   def deAllocate(address: IpAddress): IpAddressPool = {
     return new IpAddressPool(first, last, freeRangesWithAdditionalFreeAddress(address))
   }

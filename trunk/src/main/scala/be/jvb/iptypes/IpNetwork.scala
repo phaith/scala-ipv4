@@ -6,15 +6,28 @@ import java.lang.String
  * Represents an Ipv4 network (i.e. an address and a mask).
  *
  * @author <a href="http://janvanbesien.blogspot.com">Jan Van Besien</a>
+ *
+ * @param address network address of the network
+ * @param mask network mask of the network
  */
 class IpNetwork(val address: IpAddress, val mask: IpNetworkMask)
         extends IpAddressRange(IpNetwork.first(address, mask), IpNetwork.last(address, mask)) {
+  /**
+   * Construct a network from two addresses. This will create the smallest possible network ("longest prefix match") which contains
+   * both addresses.
+   */
   def this(first: IpAddress, last: IpAddress) = this (first, IpNetworkMask.longestPrefixNetwork(first, last))
 
   private def this(addressAndMask: (IpAddress, IpNetworkMask)) = this (addressAndMask._1, addressAndMask._2)
 
+  /**
+   * Construct a network from a CIDR notation (e.g. "192.168.0.0/24" or "192.168.0.0/255.255.255.0")
+   */
   def this(network: String) = this (IpNetwork.parseAddressAndMaskFromCidrNotation(network))
 
+  /**
+   * @return CIDR notation
+   */
   override def toString: String = first.toString + "/" + mask.prefixLength
 }
 
