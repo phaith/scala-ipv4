@@ -114,6 +114,15 @@ class IpAddressTest extends FunSuite with Checkers {
     expect(new IpAddress(InetAddress.getLocalHost)) {new IpAddress("127.0.0.1")}
   }
 
+  test("pattern match") {
+    new IpAddress("1.2.6.7") match {
+      case IpAddress(x:String) => assert(x === "1.2.6.7")
+    }
+    new IpAddress("1.2.6.7") match {
+      case IpAddress(x:Long) => assert(x === new IpAddress("1.2.6.7").value)
+    }
+  }
+
   def ipAddressGenerator: Gen[IpAddress] = {
     for{
       value <- Gen.choose(0L, 0xFFFFFFFFL)
