@@ -118,9 +118,9 @@ class IpAddressTest extends FunSuite with Checkers {
     new IpAddress("1.2.6.7") match {
       case IpAddress(x:String) => assert(x === "1.2.6.7")
     }
-    new IpAddress("1.2.6.7") match {
-      case IpAddress(x:Long) => assert(x === new IpAddress("1.2.6.7").value)
-    }
+//    new IpAddress("1.2.6.7") match {
+//      case IpAddress(x:Long) => assert(x === new IpAddress("1.2.6.7").value)
+//    }
   }
 
   def ipAddressGenerator: Gen[IpAddress] = {
