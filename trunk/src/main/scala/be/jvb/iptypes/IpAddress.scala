@@ -52,9 +52,5 @@ object IpAddress {
     return Some(ipAddress.toString)
   }
 
-//  def unapply(ipAddress: IpAddress): Option[Long] = {
-//    return Some(ipAddress.value)
-//  }
-
 }
 

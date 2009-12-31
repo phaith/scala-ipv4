@@ -167,6 +167,16 @@ class IpAddressPool private(override val first: IpAddress, override val last: Ip
     freeRanges.size
   }
 
+  // TODO: methods to list all free and all allocated addresses
+
+  def freeAddresses(): Stream[IpAddress] = {
+    throw new UnsupportedOperationException("TODO")
+  }
+
+  def allocatedAddresses(): Stream[IpAddress] = {
+    throw new UnsupportedOperationException("TODO")
+  }
+
   override def toString(): String = {
     freeRanges.toString
   }
