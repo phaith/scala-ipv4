@@ -1,6 +1,7 @@
 package be.jvb.iptypes
 
 import scala.collection.immutable._
+import scala.collection.mutable.ListBuffer
 
 /**
  * Represents a pool of IPv4 addresses. A pool is a range of addresses, from which some can be "allocated" and some can be
@@ -16,8 +17,6 @@ import scala.collection.immutable._
 class IpAddressPool private(override val first: IpAddress, override val last: IpAddress, val freeRanges: SortedSet[IpAddressRange])
         extends IpAddressRange(first, last) {
   validateFreeRanges(freeRanges)
-
-  // TODO: add a public constructor to construct a pool with some addresses already allocated
 
   /**
    * Construct a pool which is completely free.
@@ -116,14 +115,14 @@ class IpAddressPool private(override val first: IpAddress, override val last: Ip
     if (!contains(address))
       throw new IllegalArgumentException("can not deallocate address which is not contained in the range of the pool [" + address + "]")
 
-    return new IpAddressPool(first, last, freeRangesWithAdditionalFreeAddress(address))
+    return new IpAddressPool(first, last, addAddressToFreeRanges(address))
   }
 
   /**
    * Add the given address as a free address in the set of free ranges. The implementation tries to merge existing ranges
    * as much as possible to prevent fragmentation.
    */
-  private def freeRangesWithAdditionalFreeAddress(address: IpAddress): SortedSet[IpAddressRange] = {
+  private def addAddressToFreeRanges(address: IpAddress): SortedSet[IpAddressRange] = {
     val freeRangeBeforeAddress: Iterable[IpAddressRange] = freeRanges.filter(element => element.last + 1 == address)
     val freeRangeAfterAddress: Iterable[IpAddressRange] = freeRanges.filter(element => element.first - 1 == address)
 
@@ -163,18 +162,69 @@ class IpAddressPool private(override val first: IpAddress, override val last: Ip
     freeRanges.map(_ contains address).reduceLeft((x, y) => x || y)
   }
 
+  /**
+   * @return the number of free ranges fragments
+   */
   def fragments(): Int = {
     freeRanges.size
   }
 
-  // TODO: methods to list all free and all allocated addresses
-
+  /**
+   * @return a stream of all free addresses in the pool
+   */
   def freeAddresses(): Stream[IpAddress] = {
-    throw new UnsupportedOperationException("TODO")
+    toAddressesStream(freeRanges.toList)
   }
 
+  /**
+   * @return a stream of all allocated addresses in the pool
+   */
   def allocatedAddresses(): Stream[IpAddress] = {
-    throw new UnsupportedOperationException("TODO")
+    toAddressesStream(allocatedRanges.toList)
+  }
+
+  /**
+   * @return ranges of allocated addresses in the pool
+   * @note the pool implementation keeps track of the free addresses, so this operation is more expensive than the freeRanges() one
+   */
+  def allocatedRanges(): List[IpAddressRange] = {
+    if (freeRanges.isEmpty) {
+      // one big range of allocated addresses
+      List[IpAddressRange](new IpAddressRange(first, last))
+    } else {
+      makeNonEmptyListOfAllocatedRanges()
+    }
+  }
+
+  private def makeNonEmptyListOfAllocatedRanges(): List[IpAddressRange] = {
+    val allocatedRanges: ListBuffer[IpAddressRange] = new ListBuffer[IpAddressRange]()
+    var currentStart: IpAddress = first
+    var currentEnd: IpAddress = null
+    for (freeRange <- freeRanges) {
+      currentEnd = freeRange.first
+      if (currentEnd != currentStart) { // occurs if first free range starts at the beginning of the pool
+        allocatedRanges + new IpAddressRange(currentStart, currentEnd - 1)
+      }
+      currentStart = freeRange.last + 1
+    }
+    if (currentStart <= last) { // occurs if the last free range didn't reach until the end of the pool
+      allocatedRanges + new IpAddressRange(currentStart, last)
+    }
+    return allocatedRanges.toList
+
+  }
+
+  //  /**
+  //   * @return ranges of free addresses in the pool
+  //   */
+  //  def freeRanges(): SortedSet[IpAddressRange] = freeRanges
+
+  private def toAddressesStream(ranges: List[IpAddressRange]): Stream[IpAddress] = {
+    if (ranges.isEmpty) {
+      Stream.empty
+    } else {
+      Stream.concat(ranges.head.addresses, toAddressesStream(ranges.tail))
+    }
   }
 
   override def toString(): String = {

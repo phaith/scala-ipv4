@@ -161,4 +161,63 @@ class IpAddressPoolTest extends FunSuite {
       toAllocate += 2
     }
   }
+
+  test("list free addresses") {
+    var pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.11"))
+    // all free
+    assert(pool.freeAddresses.size === 8)
+    pool.addresses.foreach(address => assert(pool.freeAddresses.contains(address)))
+
+    // one less free
+    pool = pool.allocate(new IpAddress("1.2.3.8"))._1
+    assert(pool.freeAddresses.size === 7)
+    assert(!pool.freeAddresses.contains(new IpAddress("1.2.3.8")))
+
+    // two less free
+    pool = pool.allocate(new IpAddress("1.2.3.4"))._1
+    assert(pool.freeAddresses.size === 6)
+    assert(!pool.freeAddresses.contains(new IpAddress("1.2.3.8")))
+    assert(!pool.freeAddresses.contains(new IpAddress("1.2.3.4")))
+
+    // three less free
+    pool = pool.allocate(new IpAddress("1.2.3.11"))._1
+    assert(pool.freeAddresses.size === 5)
+    assert(!pool.freeAddresses.contains(new IpAddress("1.2.3.8")))
+    assert(!pool.freeAddresses.contains(new IpAddress("1.2.3.4")))
+    assert(!pool.freeAddresses.contains(new IpAddress("1.2.3.11")))
+  }
+
+  test("list allocated addresses") {
+    var pool = new IpAddressPool(new IpAddress("1.2.3.4"), new IpAddress("1.2.3.11"))
+    // none allocated
+    assert(pool.allocatedAddresses.size === 0)
+    pool.addresses.foreach(address => assert(!pool.allocatedAddresses.contains(address)))
+
+    // one allocated
+    pool = pool.allocate(new IpAddress("1.2.3.8"))._1
+    assert(pool.allocatedAddresses.size === 1)
+    assert(pool.allocatedAddresses.contains(new IpAddress("1.2.3.8")))
+
+    // two allocated
+    pool = pool.allocate(new IpAddress("1.2.3.4"))._1
+    assert(pool.allocatedAddresses.size === 2)
+    assert(pool.allocatedAddresses.contains(new IpAddress("1.2.3.8")))
+    assert(pool.allocatedAddresses.contains(new IpAddress("1.2.3.4")))
+
+    // three allocated
+    pool = pool.allocate(new IpAddress("1.2.3.11"))._1
+    assert(pool.allocatedAddresses.size === 3)
+    assert(pool.allocatedAddresses.contains(new IpAddress("1.2.3.8")))
+    assert(pool.allocatedAddresses.contains(new IpAddress("1.2.3.4")))
+    assert(pool.allocatedAddresses.contains(new IpAddress("1.2.3.11")))
+
+    // four allocated
+    pool = pool.allocate(new IpAddress("1.2.3.9"))._1
+    assert(pool.allocatedAddresses.size === 4)
+    assert(pool.allocatedAddresses.contains(new IpAddress("1.2.3.8")))
+    assert(pool.allocatedAddresses.contains(new IpAddress("1.2.3.4")))
+    assert(pool.allocatedAddresses.contains(new IpAddress("1.2.3.11")))
+    assert(pool.allocatedAddresses.contains(new IpAddress("1.2.3.9")))    
+  }
+
 }
