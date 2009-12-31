@@ -10,15 +10,14 @@ import scala.collection.immutable._
  *
  * @param first first address in the pool
  * @param last last address in the pool
- * @param freeRanges sorted set of all free ranges in this pool. All free ranges should be contained in the range from first to last,
- *                   and should not overlap
+ * @param freeRanges sorted set of all free ranges in this pool. All free ranges should be contained in the range from first to last;
+ *                   none of the free ranges should overlap; and the set of free ranges should contain as little fragments as necessary.
  */
-class IpAddressPool(override val first: IpAddress, override val last: IpAddress, val freeRanges: SortedSet[IpAddressRange])
+class IpAddressPool private(override val first: IpAddress, override val last: IpAddress, val freeRanges: SortedSet[IpAddressRange])
         extends IpAddressRange(first, last) {
+  validateFreeRanges(freeRanges)
 
-  {
-    // TODO: validate that the free ranges set is a valid set (no overlapping, not outside boundaries, ...)
-  }
+  // TODO: add a public constructor to construct a pool with some addresses already allocated
 
   /**
    * Construct a pool which is completely free.
@@ -33,6 +32,15 @@ class IpAddressPool(override val first: IpAddress, override val last: IpAddress,
    */
   def this(range: IpAddressRange) = {
     this (range.first, range.last)
+  }
+
+  private def validateFreeRanges(toValidate: SortedSet[IpAddressRange]) = {
+    if (!toValidate.isEmpty && !checkWithinBounds(toValidate))
+      throw new IllegalArgumentException("invalid free ranges: not all within pool range")
+  }
+
+  private def checkWithinBounds(toValidate: SortedSet[IpAddressRange]): Boolean = {
+    return (toValidate.firstKey.first >= first && toValidate.lastKey.last <= last)
   }
 
   /**
