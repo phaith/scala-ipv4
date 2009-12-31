@@ -56,4 +56,11 @@ object IpNetworkMask {
   def longestPrefixNetwork(first: IpAddress, last: IpAddress): IpNetworkMask = {
     IpNetworkMask.fromPrefixLength(IpNetworkMask.fromLongToPrefixLength(~first.value ^ last.value))
   }
+
+  def apply(string: String): IpNetworkMask = new IpNetworkMask(SmallByteArray.parseAsLong(string, IpAddress.N_BYTES, DEC()))
+
+  def unapply(ipNetworkMask: IpNetworkMask): Option[String] = {
+    return Some(ipNetworkMask.toString)
+  }
+
 }

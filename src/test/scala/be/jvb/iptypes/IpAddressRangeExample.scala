@@ -50,5 +50,11 @@ class IpAddressRangeExample extends WordSpec with ShouldMatchers {
       range - new IpAddress("192.168.0.3") should be(remainingRanges)
     }
 
+    "have a method to iterate through all addresses" in {
+      range.addresses.foreach(address => {
+        range.contains(address) should be(true)
+      })
+    }
+
   }
 }
