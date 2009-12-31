@@ -20,8 +20,6 @@ class IpAddressPool(override val first: IpAddress, override val last: IpAddress,
     // TODO: validate that the free ranges set is a valid set (no overlapping, not outside boundaries, ...)
   }
 
-  // TODO: in allocate and deallocate, check that the address is actually contained in the pool..
-
   /**
    * Construct a pool which is completely free.
    */
@@ -60,6 +58,9 @@ class IpAddressPool(override val first: IpAddress, override val last: IpAddress,
    * @returns the pool after allocation and the allocated address (or None if the address was not free in this pool)
    */
   def allocate(toAllocate: IpAddress): (IpAddressPool, Option[IpAddress]) = {
+    if (!contains(toAllocate))
+      throw new IllegalArgumentException("can not allocate address which is not contained in the range of the pool [" + toAllocate + "]")
+
     // go find the range that contains the requested address
     findFreeRangeContaining(toAllocate) match {
       case Some(range) => doAllocate(toAllocate, range) // allocate in the range we found
@@ -104,6 +105,9 @@ class IpAddressPool(override val first: IpAddress, override val last: IpAddress,
    * @returns the pool after deallocation
    */
   def deAllocate(address: IpAddress): IpAddressPool = {
+    if (!contains(address))
+      throw new IllegalArgumentException("can not deallocate address which is not contained in the range of the pool [" + address + "]")
+
     return new IpAddressPool(first, last, freeRangesWithAdditionalFreeAddress(address))
   }
 
