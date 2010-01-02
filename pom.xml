@@ -6,6 +6,10 @@
     <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
     <name>Scala IPv4</name>
+    <scm>
+        <url>https://scala-ipv4.googlecode.com/svn/trunk</url>
+        <connection>scm:svn:https://scala-ipv4.googlecode.com/svn/trunk/</connection>
+    </scm>
     <repositories>
         <repository>
             <id>scala-tools.org</id>
