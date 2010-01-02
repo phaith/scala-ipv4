@@ -3,11 +3,11 @@
     <groupId>be.jvb.scala-ipv4</groupId>
     <artifactId>scala-ipv4</artifactId>
     <packaging>jar</packaging>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
     <name>Scala IPv4</name>
     <scm>
-        <url>https://scala-ipv4.googlecode.com/svn/tags/scala-ipv4-0.1</url>
-        <connection>scm:svn:https://scala-ipv4.googlecode.com/svn/tags/scala-ipv4-0.1</connection>
+        <url>https://scala-ipv4.googlecode.com/svn/trunk</url>
+        <connection>scm:svn:https://scala-ipv4.googlecode.com/svn/trunk/</connection>
     </scm>
     <repositories>
         <repository>
