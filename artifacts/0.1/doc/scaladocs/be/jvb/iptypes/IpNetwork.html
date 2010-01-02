@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+        <head><title>class IpNetwork in be.jvb.iptypes</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF8"></meta><meta content="scaladoc (version 2.7.7.final)" name="generator"></meta><link href="../../../style.css" type="text/css" rel="stylesheet"></link><script type="text/javascript" src="../../../script.js"></script>
+        </head>
+        <body onload="init()">
+        <table summary="" class="navigation">
+        <tr>
+          <td class="navigation-links" valign="top">
+            <!-- <table><tr></tr></table> -->
+          </td>
+          <td align="right" valign="top" style="white-space:nowrap;" rowspan="2">
+            <div class="doctitle-larger">Scala IPv4 0.1 API</div>
+          </td>
+        </tr>
+        <tr><td></td></tr>
+      </table>
+        
+      <div class="entity">
+        <a href="../../../be/jvb/iptypes$package.html" target="_self">be.jvb.iptypes</a>
+        <br></br>
+        <span class="entity">class  IpNetwork</span>
+      </div><hr></hr>
+      <div class="source">
+        [source: <a href="" class="be/jvb/iptypes/IpNetwork"><code>be/jvb/iptypes/IpNetwork.scala</code></a>]
+      </div><hr></hr>
+      <a name="IpNetwork"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>class</code>
+        <em>IpNetwork</em>(<code>val </code><em>address</em> : <a href="../../../be/jvb/iptypes/IpAddress.html" target="_self">IpAddress</a>, <code>val </code><em>mask</em> : <a href="../../../be/jvb/iptypes/IpNetworkMask.html" target="_self">IpNetworkMask</a>)
+      </dt>
+      <dd><code> extends </code><a href="../../../be/jvb/iptypes/IpAddressRange.html" target="_self">IpAddressRange</a></dd>
+    </dl>
+      <dl><dd>Represents an Ipv4 network (i.e. an address and a mask).</dd></dl>
+      <dl><dt style="margin:10px 0 0 20px;">
+        <b>Author</b></dt><dd><a href="http://janvanbesien.blogspot.com">Jan Van Besien</a></dd><dt style="margin:10px 0 0 20px;">
+        <b>Parameters</b></dt><dd><code>address - </code>network address of the network</dd><dd><code>mask - </code>network mask of the network</dd></dl>
+    
+      <table summary="" cellpadding="3" class="member">
+      <tr><td class="title" colspan="2">Additional Constructor Summary</td></tr>
+      <tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../be/jvb/iptypes/IpNetwork.html#this%28be.jvb.iptypes.IpAddress%2Cbe.jvb.iptypes.IpAddress%29" target="_self">this</a></em>
+        (<em>first</em> : <a href="../../../be/jvb/iptypes/IpAddress.html" target="_self">IpAddress</a>, <em>last</em> : <a href="../../../be/jvb/iptypes/IpAddress.html" target="_self">IpAddress</a>) : <a href="../../../be/jvb/iptypes/IpNetwork.html" target="_self">IpNetwork</a>
+        
+        <div>Construct a network from two addresses. This will create the smallest possible network ("longest prefix match") which contains
+   both addresses.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../be/jvb/iptypes/IpNetwork.html#this%28java.lang.String%29" target="_self">this</a></em>
+        (<em>network</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="../../../be/jvb/iptypes/IpNetwork.html" target="_self">IpNetwork</a>
+        
+        <div>Construct a network from a CIDR notation (e.g. "192.168.0.0/24" or "192.168.0.0/255.255.255.0")</div>
+      </td>
+    </tr>
+      </table>
+
+<table summary="" cellpadding="3" class="inherited">
+        <tr><td class="title" colspan="2">
+          Values and Variables inherited from <a href="../../../be/jvb/iptypes/IpAddressRange.html" target="_self">IpAddressRange</a>
+        </td></tr>
+        <tr><td class="signature" colspan="2">
+          <a href="../../../be/jvb/iptypes/IpAddressRange.html#first" target="_self">first</a>, <a href="../../../be/jvb/iptypes/IpAddressRange.html#last" target="_self">last</a>
+        </td></tr>
+      </table>
+<table summary="" cellpadding="3" class="member">
+      <tr><td class="title" colspan="2">Method Summary</td></tr>
+      <tr>
+      <td class="modifiers" valign="top"> 
+        <code>override def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../be/jvb/iptypes/IpNetwork.html#toString%28%29" target="_self">toString</a></em>
+         : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>
+        
+        <div></div>
+      </td>
+    </tr>
+      </table><table summary="" cellpadding="3" class="inherited">
+        <tr><td class="title" colspan="2">
+          Methods inherited from <a href="../../../be/jvb/iptypes/IpAddressRange.html" target="_self">IpAddressRange</a>
+        </td></tr>
+        <tr><td class="signature" colspan="2">
+          <a href="../../../be/jvb/iptypes/IpAddressRange.html#contains%28be.jvb.iptypes.IpAddress%29" target="_self">contains</a>, <a href="../../../be/jvb/iptypes/IpAddressRange.html#contains%28be.jvb.iptypes.IpAddressRange%29" target="_self">contains</a>, <a href="../../../be/jvb/iptypes/IpAddressRange.html#overlaps%28be.jvb.iptypes.IpAddressRange%29" target="_self">overlaps</a>, <a href="../../../be/jvb/iptypes/IpAddressRange.html#length" target="_self">length</a>, <a href="../../../be/jvb/iptypes/IpAddressRange.html#addresses%28%29" target="_self">addresses</a>, <a href="../../../be/jvb/iptypes/IpAddressRange.html#compare%28be.jvb.iptypes.IpAddressRange%29" target="_self">compare</a>, <a href="../../../be/jvb/iptypes/IpAddressRange.html#-%28be.jvb.iptypes.IpAddress%29" target="_self">-</a>, <a href="../../../be/jvb/iptypes/IpAddressRange.html#%2B%28be.jvb.iptypes.IpAddress%29" target="_self">+</a>, <a href="../../../be/jvb/iptypes/IpAddressRange.html#equals%28Any%29" target="_self">equals</a>, <a href="../../../be/jvb/iptypes/IpAddressRange.html#canEqual%28Any%29" target="_self">canEqual</a>, <a href="../../../be/jvb/iptypes/IpAddressRange.html#hashCode%28%29" target="_self">hashCode</a>
+        </td></tr>
+      </table><table summary="" cellpadding="3" class="inherited">
+        <tr><td class="title" colspan="2">
+          Methods inherited from <a href="" target="contentFrame" class="scala/Ordered">scala.Ordered</a>
+        </td></tr>
+        <tr><td class="signature" colspan="2">
+          <a href="#&amp;lt;" target="contentFrame" class="scala/Ordered">scala.Ordered.&lt;</a>, <a href="#&amp;gt;" target="contentFrame" class="scala/Ordered">scala.Ordered.&gt;</a>, <a href="#&amp;lt;=" target="contentFrame" class="scala/Ordered">scala.Ordered.&lt;=</a>, <a href="#&amp;gt;=" target="contentFrame" class="scala/Ordered">scala.Ordered.&gt;=</a>, <a href="#compareTo" target="contentFrame" class="scala/Ordered">scala.Ordered.compareTo</a>
+        </td></tr>
+      </table><table summary="" cellpadding="3" class="inherited">
+        <tr><td class="title" colspan="2">
+          Methods inherited from <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        </td></tr>
+        <tr><td class="signature" colspan="2">
+          <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#getClass%28%29" target="_self">getClass</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#clone%28%29" target="_self">clone</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#notify%28%29" target="_self">notify</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#notifyAll%28%29" target="_self">notifyAll</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#wait%28Long%29" target="_self">wait</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#wait%28Long%2CInt%29" target="_self">wait</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#wait%28%29" target="_self">wait</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#finalize%28%29" target="_self">finalize</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#%3D%3D%28AnyRef%29" target="_self">==</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#%21%3D%28AnyRef%29" target="_self">!=</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#eq%28AnyRef%29" target="_self">eq</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#ne%28AnyRef%29" target="_self">ne</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#synchronized%28T0%29" target="_self">synchronized</a>
+        </td></tr>
+      </table><table summary="" cellpadding="3" class="inherited">
+        <tr><td class="title" colspan="2">
+          Methods inherited from <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html" target="_self">Any</a>
+        </td></tr>
+        <tr><td class="signature" colspan="2">
+          <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html#%3D%3D%28Any%29" target="_self">==</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html#%21%3D%28Any%29" target="_self">!=</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html#isInstanceOf" target="_self">isInstanceOf</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html#asInstanceOf" target="_self">asInstanceOf</a>
+        </td></tr>
+      </table>
+
+
+      <table summary="" cellpadding="3" class="member-detail">
+          <tr><td class="title">Additional Constructor Details</td></tr>
+        </table><div><a name="this%28be.jvb.iptypes.IpAddress%2Cbe.jvb.iptypes.IpAddress%29"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>this</em>(<em>first</em> : <a href="../../../be/jvb/iptypes/IpAddress.html" target="_self">IpAddress</a>, <em>last</em> : <a href="../../../be/jvb/iptypes/IpAddress.html" target="_self">IpAddress</a>) : <a href="../../../be/jvb/iptypes/IpNetwork.html" target="_self">IpNetwork</a>
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Construct a network from two addresses. This will create the smallest possible network ("longest prefix match") which contains
+   both addresses.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="this%28java.lang.String%29"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>this</em>(<em>network</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="../../../be/jvb/iptypes/IpNetwork.html" target="_self">IpNetwork</a>
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Construct a network from a CIDR notation (e.g. "192.168.0.0/24" or "192.168.0.0/255.255.255.0")</dd></dl>
+      <dl></dl>
+    <hr></hr></div>
+
+
+<table summary="" cellpadding="3" class="member-detail">
+          <tr><td class="title">Method Details</td></tr>
+        </table><div><a name="toString%28%29"></a><dl>
+      <dt>
+        
+        <code>override</code>
+        <code>def</code>
+        <em>toString</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd></dd></dl>
+      <dl><dt style="margin:10px 0 0 20px;">
+        <b>Returns</b></dt><dd>CIDR notation</dd></dl>
+    <dl>
+        <dt style="margin:10px 0 0 20px;">
+          <b>Overrides</b>
+        </dt>
+        <dd>
+        <a href="../../../be/jvb/iptypes/IpAddressRange.html" target="_self">IpAddressRange</a>.<a href="../../../be/jvb/iptypes/IpAddressRange.html#toString%28%29" target="_self">toString</a>
+        </dd>
+      </dl><hr></hr></div>
+
+
+    <hr></hr>
+        <div>Copyright (c) 2010. All Rights Reserved.</div><table summary="" class="navigation">
+        <tr>
+          <td class="navigation-links" valign="top">
+            <!-- <table><tr></tr></table> -->
+          </td>
+          <td align="right" valign="top" style="white-space:nowrap;" rowspan="2">
+            <div class="doctitle-larger">Scala IPv4 0.1 API</div>
+          </td>
+        </tr>
+        <tr><td></td></tr>
+      </table>
+      </body>
+      </html>
