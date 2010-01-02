@@ -1,0 +1,8 @@
+- verify pool performance -> stackoverflow in redblack ?
+- implement Range or whatever to be able to loop through ip address ranges etc
+- apply/unapply for networks, ranges and pools
+- enhance BDD examples (the DSL allows for finer syntax than what I'm currently doing)
+- be inspired by some of the functionality in http://www.rhythm.cx/~steve/devel/iptree/
+- switch to scala 2.8
+- add java interfaces?
+- make available (maven repo)
