@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+        <head><title>All classes and objects in be.jvb.iptypes</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF8"></meta><meta content="scaladoc (version 2.7.7.final)" name="generator"></meta><link href="../../style.css" type="text/css" rel="stylesheet"></link><script type="text/javascript" src="../../script.js"></script>
+        </head>
+        <body onload="init()"><div class="page-title"><div>Scala IPv4 0.1 API</div></div><p><div>This document is the API specification for Scala IPv4 0.1 API</div></p><table summary="" cellpadding="3" class="member">
+        <tr><td class="title" colspan="2">Class Summary</td></tr>
+        <tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../be/jvb/iptypes/IpAddress.html" target="_self">IpAddress</a></em>
+        (<code>val </code><em>value</em> : <a href="http://www.scala-lang.org/docu/files/api/scala/Long.html" target="_self">Long</a>)<code> extends </code><a href="" target="contentFrame" class="be/jvb/iptypes/SmallByteArray">be.jvb.iptypes.SmallByteArray</a>
+        
+        <div>Represents an IPv4 address.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../be/jvb/iptypes/IpAddressPool.html" target="_self">IpAddressPool</a></em>
+        (<code>val override </code><em>first</em> : <a href="../../be/jvb/iptypes/IpAddress.html" target="_self">IpAddress</a>, <code>val override </code><em>last</em> : <a href="../../be/jvb/iptypes/IpAddress.html" target="_self">IpAddress</a>, <code>val </code><em>freeRanges</em> : <a href="" target="contentFrame" class="scala/collection/immutable/SortedSet">scala.collection.immutable.SortedSet</a>[<a href="../../be/jvb/iptypes/IpAddressRange.html" target="_self">IpAddressRange</a>])<code> extends </code><a href="../../be/jvb/iptypes/IpAddressRange.html" target="_self">IpAddressRange</a>
+        
+        <div>Represents a pool of IPv4 addresses. A pool is a range of addresses, from which some can be "allocated" and some can be
+ "free".</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../be/jvb/iptypes/IpAddressRange.html" target="_self">IpAddressRange</a></em>
+        (<code>val </code><em>first</em> : <a href="../../be/jvb/iptypes/IpAddress.html" target="_self">IpAddress</a>, <code>val </code><em>last</em> : <a href="../../be/jvb/iptypes/IpAddress.html" target="_self">IpAddress</a>)<code> extends </code><a href="" target="contentFrame" class="scala/Ordered">scala.Ordered</a>[<a href="../../be/jvb/iptypes/IpAddressRange.html" target="_self">IpAddressRange</a>]
+        
+        <div>Represents a continuous range of IPv4 ip addresses (bounds included).</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../be/jvb/iptypes/IpNetwork.html" target="_self">IpNetwork</a></em>
+        (<code>val </code><em>address</em> : <a href="../../be/jvb/iptypes/IpAddress.html" target="_self">IpAddress</a>, <code>val </code><em>mask</em> : <a href="../../be/jvb/iptypes/IpNetworkMask.html" target="_self">IpNetworkMask</a>)<code> extends </code><a href="../../be/jvb/iptypes/IpAddressRange.html" target="_self">IpAddressRange</a>
+        
+        <div>Represents an Ipv4 network (i.e. an address and a mask).</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../be/jvb/iptypes/IpNetworkMask.html" target="_self">IpNetworkMask</a></em>
+        (<code>val override </code><em>value</em> : <a href="http://www.scala-lang.org/docu/files/api/scala/Long.html" target="_self">Long</a>)<code> extends </code><a href="../../be/jvb/iptypes/IpAddress.html" target="_self">IpAddress</a>
+        
+        <div>Represents an IPv4 network mask.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../be/jvb/iptypes/MacAddress.html" target="_self">MacAddress</a></em>
+        (<code>val </code><em>value</em> : <a href="http://www.scala-lang.org/docu/files/api/scala/Long.html" target="_self">Long</a>)<code> extends </code><a href="" target="contentFrame" class="be/jvb/iptypes/SmallByteArray">be.jvb.iptypes.SmallByteArray</a>
+        
+        <div>Represents a MAC address.</div>
+      </td>
+    </tr>        
+        </table>
+<table summary="" cellpadding="3" class="member">
+        <tr><td class="title" colspan="2">Object Summary</td></tr>
+        <tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../be/jvb/iptypes/IpAddress$object.html" target="_self">IpAddress</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../be/jvb/iptypes/IpNetwork$object.html" target="_self">IpNetwork</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../be/jvb/iptypes/IpNetworkMask$object.html" target="_self">IpNetworkMask</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../be/jvb/iptypes/MacAddress$object.html" target="_self">MacAddress</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../be/jvb/iptypes/SmallByteArray$object.html" target="_self">SmallByteArray</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>        
+        </table></body>
+      </html>
