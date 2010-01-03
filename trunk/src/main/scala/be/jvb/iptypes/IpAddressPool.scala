@@ -228,7 +228,7 @@ class IpAddressPool private(override val first: IpAddress, override val last: Ip
   }
 
   override def toString(): String = {
-    freeRanges.toString
+    "IpAddressPool " + super.toString + " with free ranges " + freeRanges.toString
   }
 
   // TODO: toStringRepresentation which can also be parsed back into an IpAddressPool
