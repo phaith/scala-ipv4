@@ -1,5 +1,7 @@
 package be.jvb.iptypes
 
+import scala.math.Ordered
+
 /**
  * Represents a continuous range of IPv4 ip addresses (bounds included).
  *

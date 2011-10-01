@@ -1,6 +1,7 @@
 package be.jvb.iptypes
 
 import java.util.Arrays
+import scala.math.Ordered
 
 /**
  * Represents a byte array which is small enough to fit in a long (max 8 bytes).
