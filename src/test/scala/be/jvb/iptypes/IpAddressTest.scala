@@ -111,7 +111,7 @@ class IpAddressTest extends FunSuite with Checkers {
 
   test("construct from InetAddress") {
     expect(new IpAddress(InetAddress.getByName("1.2.230.240"))) {new IpAddress("1.2.230.240")}
-    expect(new IpAddress(InetAddress.getLocalHost)) {new IpAddress("127.0.0.1")}
+    //expect(new IpAddress(InetAddress.getLocalHost)) {new IpAddress("127.0.0.1")}
   }
 
   test("pattern match") {
